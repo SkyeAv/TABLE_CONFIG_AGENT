@@ -588,270 +588,243 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            str
+            Wang
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC6555748",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx",
+            "ext_param": (False, "A. Th1 and Th2 pathway"),
+            "row_slice": (3, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, "59"),
+            "p_val": (True, "C"),
+            "fdr": (False, "Benjamini Hochberg"),
+            "rel_strength": (True, "D"),
+            "method": (False, "Spearman correlation"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "A"),
+            "obj": (False, "Haemophilus"),
+            "pred": "biolink:associated_with",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
+                (True, ["biolink:Gene"]),
+                (False, ["biolink:OrganismTaxon"]),
             ],
             "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:Protein"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Wang
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC6555748",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx",
+            "ext_param": (False, "A. Th1 and Th2 pathway"),
+            "row_slice": (3, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, "59"),
+            "p_val": (True, "C"),
+            "fdr": (False, "Benjamini Hochberg"),
+            "rel_strength": (True, "D"),
+            "method": (False, "Spearman correlation"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "A"),
+            "obj": (False, "Haemophilus"),
+            "pred": "biolink:associated_with",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
+                (True, ["biolink:Gene"]),
+                (False, ["biolink:OrganismTaxon"]),
             ],
             "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:Protein"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Wang
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC6555748",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx",
+            "ext_param": (False, "A. Th1 and Th2 pathway"),
+            "row_slice": (3, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, "59"),
+            "p_val": (True, "C"),
+            "fdr": (False, "Benjamini Hochberg"),
+            "rel_strength": (True, "D"),
+            "method": (False, "Spearman correlation"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "A"),
+            "obj": (False, "Haemophilus"),
+            "pred": "biolink:associated_with",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
+                (True, ["biolink:Gene"]),
+                (False, ["biolink:OrganismTaxon"]),
             ],
             "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:Protein"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Wu
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC11166937",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11166937/bin/41467_2023_42013_MOESM4_ESM.csv",
+            "ext_param": (True, ","),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 27),
+            "p_val": (True, "F"),
+            "fdr": (False, "Benjamini Hochberg"),
+            "rel_strength": (True, "C"),
+            "method": (False, "Log2 Fold Change From Fishers Exact Test"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (False, "microgravity"),
+            "obj": (True, "A"),
+            "pred": "biolink:affects",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (False, ["biolink:Gene", "biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Wu
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC11166937",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11166937/bin/41467_2023_42013_MOESM4_ESM.csv",
+            "ext_param": (True, ","),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 27),
+            "p_val": (True, "F"),
+            "fdr": (False, "Benjamini Hochberg"),
+            "rel_strength": (True, "C"),
+            "method": (False, "Log2 Fold Change From Fishers Exact Test"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (False, "microgravity"),
+            "obj": (True, "A"),
+            "pred": "biolink:affects",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (False, ["biolink:Gene", "biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Wu
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC11166937",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11166937/bin/41467_2023_42013_MOESM4_ESM.csv",
+            "ext_param": (True, ","),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 27),
+            "p_val": (True, "F"),
+            "fdr": (False, "Benjamini Hochberg"),
+            "rel_strength": (True, "C"),
+            "method": (False, "Log2 Fold Change From Fishers Exact Test"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (False, "microgravity"),
+            "obj": (True, "A"),
+            "pred": "biolink:affects",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (False, ["biolink:Gene", "biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Zhou
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC9153113",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9153113/bin/40168_2022_1271_MOESM1_ESM.xls",
+            "ext_param": (False, "Table S29"),
+            "row_slice": (4, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "fdr": (False, "Bonferroni"),
+            "rel_strength": (False, "ML"),
+            "method": (False, "One/Two-way-ANOVA"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "A"),
+            "obj": (False, "p-Hydroxyphenylacetic acid"),
+            "pred": "biolink:correlated_with",
 
-            "taxon": str,
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Zhou
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC9153113",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9153113/bin/40168_2022_1271_MOESM1_ESM.xls",
+            "ext_param": (False, "Table S29"),
+            "row_slice": (4, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "fdr": (False, "Bonferroni"),
+            "rel_strength": (False, "ML"),
+            "method": (False, "One/Two-way-ANOVA"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "A"),
+            "obj": (False, "p-Hydroxyphenylacetic acid"),
+            "pred": "biolink:correlated_with",
 
-            "taxon": str,
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Zhou
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC9153113",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9153113/bin/40168_2022_1271_MOESM1_ESM.xls",
+            "ext_param": (False, "Table S29"),
+            "row_slice": (4, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "fdr": (False, "Bonferroni"),
+            "rel_strength": (False, "ML"),
+            "method": (False, "One/Two-way-ANOVA"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "A"),
+            "obj": (False, "p-Hydroxyphenylacetic acid"),
+            "pred": "biolink:correlated_with",
 
-            "taxon": str,
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
