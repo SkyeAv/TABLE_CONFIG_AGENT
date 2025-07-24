@@ -1,4 +1,4 @@
-name: table-agent-llm
+name: table-config-agent
 channels:
   - pytorch
   - nvidia
