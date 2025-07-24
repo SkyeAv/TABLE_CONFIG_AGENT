@@ -428,150 +428,132 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            str
+            Qin
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC11401200",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx",
+            "ext_param": (False, "Sheet1"),
+            "row_slice": (None, 200000),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 969),
+            "rel_strength": (True, "C"),
+            "method": (False, "LASSO Regression"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "E"),
+            "obj": (True, "B"),
+            "pred": "biolink:associated_with_resistance_to",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:Gene"]),
+                (False, ["biolink:Gene"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Qin
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC11401200",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx",
+            "ext_param": (False, "Sheet1"),
+            "row_slice": (None, 200000),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 969),
+            "rel_strength": (True, "C"),
+            "method": (False, "LASSO Regression"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "E"),
+            "obj": (True, "B"),
+            "pred": "biolink:associated_with_resistance_to",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:Gene"]),
+                (False, ["biolink:Gene"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Qin
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC11401200",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx",
+            "ext_param": (False, "Sheet1"),
+            "row_slice": (None, 200000),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 969),
+            "rel_strength": (True, "C"),
+            "method": (False, "LASSO Regression"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "E"),
+            "obj": (True, "B"),
+            "pred": "biolink:associated_with_resistance_to",
 
-            "taxon": str,
+            "taxon": "NCBITaxon:9606",
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:Gene"]),
+                (False, ["biolink:Gene"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Romero
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC10434204",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx",
+            "ext_param": (False, "SupplementalTable_3"),
+            "row_slice": (5, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 474),
+            "p_val": (True, "H"),
+            "fdr": (False, "FDR of 10 percent"),
+            "rel_strength": (True, "E"),
+            "method": (False, "LME model"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "B"),
+            "obj": (True, "D"),
+            "pred": "biolink:associated_with",
 
-            "taxon": str,
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:OrganismTaxon"]),
+                (False, ["biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
 
     Example(
         input=collapse("""
-            str
+            Romero
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC10434204",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx",
+            "ext_param": (False, "SupplementalTable_3"),
+            "row_slice": (5, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 474),
+            "p_val": (True, "H"),
+            "fdr": (False, "FDR of 10 percent"),
+            "rel_strength": (True, "E"),
+            "method": (False, "LME model"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "B"),
+            "obj": (True, "D"),
+            "pred": "biolink:associated_with",
 
-            "taxon": str,
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:OrganismTaxon"]),
+                (False, ["biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
@@ -579,30 +561,27 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            str
+            Romero
         """),
         output=collapse("""{
-            "pub": str,
-            "url": str,
-            "ext_param": (bool, str),
-            "row_slice": (int, int),
+            "pub": "PMC:PMC10434204",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx",
+            "ext_param": (False, "SupplementalTable_3"),
+            "row_slice": (5, None),
 
-            "samp": (bool, str),
-            "p_val": (bool, str),
-            "fdr": (bool, str),
-            "rel_strength": (bool, str),
-            "method": (bool, str),
+            "samp": (False, 474),
+            "p_val": (True, "H"),
+            "fdr": (False, "FDR of 10 percent"),
+            "rel_strength": (True, "E"),
+            "method": (False, "LME model"),
 
-            "subj": (bool, str),
-            "obj": (bool, str),
-            "pred": str,
+            "subj": (True, "B"),
+            "obj": (True, "D"),
+            "pred": "biolink:associated_with",
 
-            "taxon": str,
             "boost_cls": [
-                (bool, [str]),
-            ],
-            "drop_cls": [
-                (bool, [str]),
+                (True, ["biolink:OrganismTaxon"]),
+                (False, ["biolink:OrganismTaxon"]),
             ],
         }"""),
     ),
