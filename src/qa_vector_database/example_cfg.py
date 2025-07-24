@@ -115,11 +115,22 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Fackle
+            From Fackleman et al.'s Gut microbiome signatures of vegan, vegetarian and omnivore diets and associated health outcomes across 21,561 individuals
+            (PMC:PMC11726441)
+            extract information from the supplemental data table 41564_2024_1870_MOESM4_ESM.xlsx (specifically sheet "Supplementary Table 13"),
+            -- which you can download at https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx.
+            Start at row 2 and then go read the rest of the data.
+            The sample size is n = 21561 individiuals.
+            P-values can be found in column G of the table; they are FDR corrected with the benjamini-hochberg multiple testing correction method.
+            There is no explicit relationship strength; however, the relationships are spearman correlations.
+            The triple in the paper best corresponds to biolink:associated_with.
+            The triple subject can be found in column A.
+            The triple object can be found in column B.
+            Please don't let either the subject or object map to biolink:OrganismTaxon.
         """),
         output=collapse("""{
             "pub": "PMC:PMC11726441",
-            "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx,"
+            "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 13"),
             "row_slice": (2, None),
 
@@ -141,11 +152,20 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Fackle
+            The publication is PMC11726441 from pubmed
+            and I want you to download https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx.
+            and use sheet Supplementary Table 13.
+            Start at row 2.
+            sample size = 21561.
+            pvalues = column G.
+            multiple testing correction = Benjamini hochberg.
+            assertion method = spearman correlation.
+            The predicate is associated_with while the subject is in column A and the object is in column B.
+            prioritize taxa for both the subject and object
         """),
         output=collapse("""{
             "pub": "PMC:PMC11726441",
-            "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx,"
+            "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 13"),
             "row_slice": (2, None),
 
@@ -167,11 +187,18 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Fackle
+            The pmc is 11726441
+            download at https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx.
+            use Supplementary Table 13.
+            row 2 = start
+            n = 21561.
+            p = G (Benjamini Hochberg)
+            method = spearman correlation.
+            column A (organism taxon) is associated_with column B (organism taxon).
         """),
         output=collapse("""{
             "pub": "PMC:PMC11726441",
-            "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx,"
+            "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 13"),
             "row_slice": (2, None),
 
