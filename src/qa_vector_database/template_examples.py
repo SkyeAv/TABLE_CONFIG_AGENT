@@ -6,7 +6,7 @@ from textwrap import dedent
 def collapse(x: str) -> str:
     return dedent(x).replace("\n", " ").strip()
 
-EXAMPLES: list[Example] = [
+HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
@@ -311,7 +311,10 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Lui
+            Lui Paper with PMC:PMC10052271. The url = https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx
+            and the sheet is Supplementary Table 6, starting at 2.
+            The sample size is in column L while the p is in column K and the strength is in column I. The method use for the anlayiss was a Generalised summary-data-based Mendelian randomization.
+            The subject is in column h (boost organism taxon) and the predicate is affects. The objevt is the value longveity and for the mapping prioritize PhenotypicFeatures and ClinicalFindings while avoiding Genes (at all costs).
         """),
         output=collapse("""{
             "pub": "PMC:PMC10052271",
@@ -341,7 +344,17 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Lui
+            The new template pmc is 10052271 and the file you can download is at 
+            "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx"
+            where you WILL use Supplementary Table 6 and YOU WILL start at row = 2.
+            Sample = L
+            P = K
+            FDR = NA
+            strength = column I
+            method = Generalised summary-data-based Mendelian randomization
+            subject = H (must be taxon)
+            object = longevity (try "biolink:PhenotypicFeature", "biolink:ClinicalFinding" and avoid "biolink:Gene")
+            predicate = biolink:affects
         """),
         output=collapse("""{
             "pub": "PMC:PMC10052271",
@@ -370,7 +383,17 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Lui
+            Lui paper at https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx
+            pmc is also "PMC:PMC10052271"
+            while using sheetname = Supplementary Table 6
+            and starting at 2.
+            n = col L
+            p is in col K
+            strength=columnI
+            its method is Generalised summary-data-based Mendelian randomization
+            subject is col H (boost taxa)
+            predicate is affects
+            object is longevity (boost clinical finding and phenotypic feature from biolink) (drop gene also from biolink)?
         """),
         output=collapse("""{
             "pub": "PMC:PMC10052271",
