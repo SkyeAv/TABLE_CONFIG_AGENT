@@ -220,7 +220,12 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Fuess
+            Make a new template with this Fuess paper.
+            The PMC is PMC:PMC8262870 and the download is https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx.
+            Use the sheet Geodermatophilaceae and start at row 2.
+            The sample size is 1929 and the relationship strength is in column D (computed using a signed network using bicor analyses).
+            The subject is also Geodermatophilaceae (prioritize taxa) and the object is in column C.
+            The predicate is correlated with and map everything in NCBITaxon:69293.
         """),
         output=collapse("""{
             "pub": "PMC:PMC8262870",
@@ -236,7 +241,7 @@ EXAMPLES: list[Example] = [
             "obj": (True, "C"),
             "pred": "biolink:correlated_with",
 
-            "taxon": "NCBITaxon:69293,"
+            "taxon": "NCBITaxon:69293",
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
@@ -245,7 +250,14 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Fuess
+            PMC:PMC8262870
+            https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx
+            sheet Geodermatophilaceae (start = 2)
+            also object Geodermatophilaceae - prioritize taxon -
+            n = 1929, strength = D, method = Signed network using bicor analyses
+            also subject = C
+            also predicate = correlated_with
+            all in NCBITaxon:69293
         """),
         output=collapse("""{
             "pub": "PMC:PMC8262870",
@@ -261,7 +273,7 @@ EXAMPLES: list[Example] = [
             "obj": (True, "C"),
             "pred": "biolink:correlated_with",
 
-            "taxon": "NCBITaxon:69293,"
+            "taxon": "NCBITaxon:69293",
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
@@ -270,7 +282,11 @@ EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Fuess
+            New template (PMC8262870):
+            Geodermatophilaceae ["biolink:OrganismTaxon"] is "biolink:correlated_with" column C [both in "NCBITaxon:69293"].
+            Download from https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx
+            and use (starting at row 2) the sheet Geodermatophilaceae.
+            Sample size = 1929. P_value = None, Multiple Testing Correction = None, Assertion Strength = D, method = "Signed network using bicor analyses".
         """),
         output=collapse("""{
             "pub": "PMC:PMC8262870",
@@ -286,7 +302,7 @@ EXAMPLES: list[Example] = [
             "obj": (True, "C"),
             "pred": "biolink:correlated_with",
 
-            "taxon": "NCBITaxon:69293,"
+            "taxon": "NCBITaxon:69293",
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],

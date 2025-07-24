@@ -1,0 +1,5 @@
+# author --> Skye Lane Goetz
+
+from_transformers: deepseek-ai/deepseek-coder-33b-instruct
+using_chroma_db: resources/chroma_db/something.db
+seed: 87
