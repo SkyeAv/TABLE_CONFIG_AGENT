@@ -513,7 +513,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Qin
+            Qin made an excel sheet (PMC:PMC11401200, https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx, Sheet1)
+            that connects genes in column E with genes in column B (all in taxon 9606) using associated_with_resistance_to
+            with a LASSO Regression from the first row of the sheet to row 200k (200_000). The regression was preformed with a sample
+            of 969 and the coeffiecents are in column C
         """),
         output=collapse("""{
             "pub": "PMC:PMC11401200",
@@ -539,7 +542,9 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Qin
+            In humans (NCBITaxon 9606) the publication PMC:PMC11401200 has an excel downloadable at https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx
+            who's Sheet1 for the first 200000 rows connects human genes in column E with human genes in column B with the predicate biolink:associated_with_resistance_to
+            through a lasso regression (n=969, coeffs in column C)
         """),
         output=collapse("""{
             "pub": "PMC:PMC11401200",
@@ -565,7 +570,13 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Qin
+            prioritize biolink:Gene for both subject and object
+            predicate is associated_with_resistance_to
+            n-969, strength=C for LASSO regression.
+            subject and object are in the model NCBITaxon:9606.
+            url for download at https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx
+            - use end at row 200,000 of Sheet1.
+            object in col B, subject col E
         """),
         output=collapse("""{
             "pub": "PMC:PMC11401200",
