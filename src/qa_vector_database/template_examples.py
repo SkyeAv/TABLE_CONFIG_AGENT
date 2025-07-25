@@ -1,11 +1,7 @@
 __author__ = "Skye Lane Goetz"
 
+from src.qa_vector_database.utils import collapse
 from langchain.schema import Example
-from textwrap import dedent
-
-
-def collapse(x: str) -> str:
-    return dedent(x).replace("\n", " ").strip()
 
 
 HUMAN_CURATED_EXAMPLES: list[Example] = [
@@ -375,7 +371,7 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
     Example(
         input=collapse(
             """
-            The new template pmc is 10052271 and the file you can download is at 
+            The new template pmc is 10052271 and the file you can download is at
             "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx"
             where you WILL use Supplementary Table 6 and YOU WILL start at row = 2.
             Sample = L
@@ -815,7 +811,7 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
     Example(
         input=collapse(
             """
-            Wang PMC6555748 excel sheet T helper: 
+            Wang PMC6555748 excel sheet T helper:
             https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx,
             use sheet A. Th1 and Th2 pathway @ row 3.
             n = 59; p = C (FDR BH); strength = D; method = Spearman;
@@ -854,10 +850,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
         input=collapse(
             """
             Wang et al. T helper pathways (PMC:PMC6555748):
-            Download at https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx, 
-            sheet A. Th1 and Th2 pathway, start row 3. 
-            Cohort of 59. 
-            Column C holds p-values (BH); column D the Spearman rho. 
+            Download at https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx,
+            sheet A. Th1 and Th2 pathway, start row 3.
+            Cohort of 59.
+            Column C holds p-values (BH); column D the Spearman rho.
             Map subjects A and objects Haemophilus to human (9606).
             Boost Gene class; drop Protein.
         """
