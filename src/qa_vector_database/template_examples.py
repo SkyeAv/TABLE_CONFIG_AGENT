@@ -602,7 +602,17 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Romero
+            I want a new template I'll add sections to from a supplemental data mr chet gepetit.
+            My paprer is PMC:PMC10434204 and I want you to donwload the hyper uber important critical
+            supplemental table at https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx.
+            WEIRD_ khfsydfgi v,jh Unrelated Ghgsydgy Rambling :3.
+            From this amazing table I want you to use SupplementalTable_3 from ROW 3 onward and ONLY row 3 onward my geptiti friend.
+            ANOTHER WEIRD RAMBLING CONVERSATION ABOUT QUEEN ELIZABETH IV.
+            The sample size for this crutial work is 474 and this was feed to a LME model.
+            P_values were FRD corrected with an unspecified method at 10% and are in column H.
+            The assertion strength is in hyper important (SURPRISE TANGENT) column E.
+            The subject is in the beautiful engligh column of cornwall, sorry I mean the subject is overriden and in the literal column B (obj=D).
+            The predicate is column associated_with and boost the almighty holy organism taxon for both object and subject.
         """),
         output=collapse("""{
             "pub": "PMC:PMC10434204",
@@ -629,7 +639,9 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Romero
+            Romero has a paper in pubmed central that is PMC:PMC10434204 with a file at URL https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx
+            this file has a table of SupplementalTable_3 that starting at row #5 connectes taxa in column B with taxa in column D through associations with eachother.
+            This was done using an LME model with an FDR of 10 percent on a cohort of 474. The pvalue is in H while the relationship strength is in column E.
         """),
         output=collapse("""{
             "pub": "PMC:PMC10434204",
@@ -657,7 +669,17 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Romero
+            Romero = PMC:PMC10434204
+            location: https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx @ SupplementalTable_3 [5:]
+            n=474
+            p=colH
+            fdr=FDR of 10 percent
+            rel_strength=colE
+            method is an LME model
+            subject: colB
+            obj: colD
+            pred: associated_with
+            prioritize biolink:OrganismTaxon node wide
         """),
         output=collapse("""{
             "pub": "PMC:PMC10434204",
