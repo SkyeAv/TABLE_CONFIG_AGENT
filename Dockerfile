@@ -8,7 +8,7 @@ EXPOSE 8080
 
 COPY . .
 
-RUN micromamba env create -f /tmp/environment.yml -n table-confog-agent && micromamba clean --all --yes
+RUN micromamba env create -f /tmp/environment.yaml -n table-config-agent && micromamba clean --all --yes
 ENV PATH=/opt/conda/envs/myenv/bin:$PATH
 
 # typer cli

@@ -4,7 +4,7 @@ from src.table_config_agent.utils import collapse
 from langchain.schema import Example
 
 
-HUMAN_CURATED_EXAMPLES: list[Example] = [
+HUMAN_CURATED_TEMPLATE_EXAMPLES: list[Example] = [
     Example(
         input=collapse(
             """
@@ -765,7 +765,7 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
     ),
 ]
 
-HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
+HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_TEMPLATE_EXAMPLES: list[Example] = [
     Example(
         input=collapse(
             """
@@ -1732,6 +1732,7 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
     ),
 ]
 
-EXAMPLES: list[Example] = (
-    HUMAN_CURATED_EXAMPLES + HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES
+TEMPLATE_EXAMPLES: list[Example] = (
+    HUMAN_CURATED_TEMPLATE_EXAMPLES
+    + HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_TEMPLATE_EXAMPLES
 )

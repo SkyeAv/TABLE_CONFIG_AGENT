@@ -5,6 +5,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  # -- PROD -- #
   - python=3.11
   - pytorch=2.3.0
   - pytorch-cuda=12.1
@@ -17,3 +18,7 @@ dependencies:
   - ruamel.yaml
   - chromadb
   - typer
+  # -- PROD.PIP -- #
+  - pip
+  - pip:
+    - bmt
