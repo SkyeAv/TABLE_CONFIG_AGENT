@@ -1,4 +1,4 @@
-name: table-config-agent
+name: table-config-agent-dev
 channels:
   - pytorch
   - nvidia
@@ -17,3 +17,7 @@ dependencies:
   - ruamel.yaml
   - chromadb
   - typer
+  - black
+  - flake8
+  - mypy
+  - pytest
