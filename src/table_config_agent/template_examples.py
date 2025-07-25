@@ -1,6 +1,6 @@
 __author__ = "Skye Lane Goetz"
 
-from src.qa_vector_database.utils import collapse
+from src.table_config_agent.utils import collapse
 from langchain.schema import Example
 
 
