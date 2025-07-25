@@ -422,7 +422,14 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Pu
+            Pu https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv is a csv
+            with pubmed_id 39054372 -
+            use "," as a delimiter.
+            The sample size is 1448 people and the p_values are in column D for a linear regression.
+            The p_values are corrected with the Benjamini-Hochberg multiple testing correction method.
+            The coefficent for the linear regression is in column C.
+            Subject is in col A obj is in col B and predi is associated with.
+            Prioritize taxa for the subject column.
         """),
         output=collapse("""{
             "pub": "PMID:39054372",
@@ -446,7 +453,9 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Pu
+            https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv from
+            PMID:39054372 connects taxa in column A with column B via associations using linear regressions on a sample of 1448
+            with Benjamini Hochberg fdr (p in col D, strength in col C).
         """),
         output=collapse("""{
             "pub": "PMID:39054372",
@@ -470,7 +479,17 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
     Example(
         input=collapse("""
-            Pu
+            PMID:39054372
+            https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv
+            ","
+            n = 1448
+            p = D
+            fdr = Benjamini Hochberg
+            strength = C
+            method = Linear regression
+            subject in A (priortize "biolink:OrganismTaxon")
+            object in B
+            pred = biolink:associated_with
         """),
         output=collapse("""{
             "pub": "PMID:39054372",
