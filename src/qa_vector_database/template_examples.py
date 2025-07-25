@@ -3,13 +3,15 @@ __author__ = "Skye Lane Goetz"
 from langchain.schema import Example
 from textwrap import dedent
 
+
 def collapse(x: str) -> str:
     return dedent(x).replace("\n", " ").strip()
 
-HUMAN_CURATED_EXAMPLES: list[Example] = [
 
+HUMAN_CURATED_EXAMPLES: list[Example] = [
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             article is PMC:PMC9691620
             use Table S3 from it
             from https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx
@@ -19,8 +21,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             while the p values are in F and they used a Bonferroni correction
             the sample size is 3064
             relationship strength is in column E and its a Two-sided Wald test
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC9691620",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx,"
             "ext_param": (False, "Table S3"),
@@ -39,11 +43,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC9691620
             https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx
             Table S3
@@ -55,8 +60,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             p = F
             strength = E
             Two-sided Wald test
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC9691620",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx,"
             "ext_param": (False, "Table S3"),
@@ -75,11 +82,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             From https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx, Table S3
             the subject is in col B,
             the predicate is biolink:associated_with,
@@ -90,8 +98,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             fdr = Bonferroni
             relationship_strength = E (Two-sided Wald test)
             The artcle from pubmed central is PMC9691620
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC9691620",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx,"
             "ext_param": (False, "Table S3"),
@@ -110,11 +120,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             From Fackleman et al.'s Gut microbiome signatures of vegan, vegetarian and omnivore diets and associated health outcomes across 21,561 individuals
             (PMC:PMC11726441)
             extract information from the supplemental data table 41564_2024_1870_MOESM4_ESM.xlsx (specifically sheet "Supplementary Table 13"),
@@ -127,8 +138,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             The triple subject can be found in column A.
             The triple object can be found in column B.
             Please don't let either the subject or object map to biolink:OrganismTaxon.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11726441",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 13"),
@@ -147,11 +160,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:OrganismTaxon"]),
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             The publication is PMC11726441 from pubmed
             and I want you to download https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx.
             and use sheet Supplementary Table 13.
@@ -162,8 +176,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             assertion method = spearman correlation.
             The predicate is associated_with while the subject is in column A and the object is in column B.
             prioritize taxa for both the subject and object
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11726441",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 13"),
@@ -182,11 +198,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:OrganismTaxon"]),
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             The pmc is 11726441
             download at https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx.
             use Supplementary Table 13.
@@ -195,8 +212,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             p = G (Benjamini Hochberg)
             method = spearman correlation.
             column A (organism taxon) is associated_with column B (organism taxon).
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11726441",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41564-024-01870-z/MediaObjects/41564_2024_1870_MOESM4_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 13"),
@@ -215,19 +234,22 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:OrganismTaxon"]),
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Make a new template with this Fuess paper.
             The PMC is PMC:PMC8262870 and the download is https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx.
             Use the sheet Geodermatophilaceae and start at row 2.
             The sample size is 1929 and the relationship strength is in column D (computed using a signed network using bicor analyses).
             The subject is also Geodermatophilaceae (prioritize taxa) and the object is in column C.
             The predicate is correlated with and map everything in NCBITaxon:69293.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC8262870",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx",
             "ext_param": (False, "Geodermatophilaceae"),
@@ -245,11 +267,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC8262870
             https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx
             sheet Geodermatophilaceae (start = 2)
@@ -258,8 +281,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             also subject = C
             also predicate = correlated_with
             all in NCBITaxon:69293
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC8262870",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx",
             "ext_param": (False, "Geodermatophilaceae"),
@@ -277,18 +302,21 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             New template (PMC8262870):
             Geodermatophilaceae ["biolink:OrganismTaxon"] is "biolink:correlated_with" column C [both in "NCBITaxon:69293"].
             Download from https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx
             and use (starting at row 2) the sheet Geodermatophilaceae.
             Sample size = 1929. P_value = None, Multiple Testing Correction = None, Assertion Strength = D, method = "Signed network using bicor analyses".
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC8262870",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/8262870/bin/mbio.00145-21-sd002.xlsx",
             "ext_param": (False, "Geodermatophilaceae"),
@@ -306,17 +334,20 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Lui Paper with PMC:PMC10052271. The url = https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx
             and the sheet is Supplementary Table 6, starting at 2.
             The sample size is in column L while the p is in column K and the strength is in column I. The method use for the anlayiss was a Generalised summary-data-based Mendelian randomization.
             The subject is in column h (boost organism taxon) and the predicate is affects. The objevt is the value longveity and for the mapping prioritize PhenotypicFeatures and ClinicalFindings while avoiding Genes (at all costs).
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC10052271",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 6"),
@@ -338,12 +369,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             The new template pmc is 10052271 and the file you can download is at 
             "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx"
             where you WILL use Supplementary Table 6 and YOU WILL start at row = 2.
@@ -355,8 +386,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             subject = H (must be taxon)
             object = longevity (try "biolink:PhenotypicFeature", "biolink:ClinicalFinding" and avoid "biolink:Gene")
             predicate = biolink:affects
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC10052271",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 6"),
@@ -378,11 +411,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Lui paper at https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx
             pmc is also "PMC:PMC10052271"
             while using sheetname = Supplementary Table 6
@@ -394,8 +428,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             subject is col H (boost taxa)
             predicate is affects
             object is longevity (boost clinical finding and phenotypic feature from biolink) (drop gene also from biolink)?
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC10052271",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-31115-8/MediaObjects/41598_2023_31115_MOESM7_ESM.xlsx",
             "ext_param": (False, "Supplementary Table 6"),
@@ -417,11 +453,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Pu https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv is a csv
             with pubmed_id 39054372 -
             use "," as a delimiter.
@@ -430,8 +467,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             The coefficent for the linear regression is in column C.
             Subject is in col A obj is in col B and predi is associated with.
             Prioritize taxa for the subject column.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:39054372",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv",
             "ext_param": (True, ","),
@@ -448,16 +487,19 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv from
             PMID:39054372 connects taxa in column A with column B via associations using linear regressions on a sample of 1448
             with Benjamini Hochberg fdr (p in col D, strength in col C).
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:39054372",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv",
             "ext_param": (True, ","),
@@ -474,11 +516,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:39054372
             https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv
             ","
@@ -490,8 +533,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             subject in A (priortize "biolink:OrganismTaxon")
             object in B
             pred = biolink:associated_with
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:39054372",
             "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs43587-024-00678-0/MediaObjects/43587_2024_678_MOESM12_ESM.csv",
             "ext_param": (True, ","),
@@ -508,17 +553,20 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
 
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Qin made an excel sheet (PMC:PMC11401200, https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx, Sheet1)
             that connects genes in column E with genes in column B (all in taxon 9606) using associated_with_resistance_to
             with a LASSO Regression from the first row of the sheet to row 200k (200_000). The regression was preformed with a sample
             of 969 and the coeffiecents are in column C
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11401200",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx",
             "ext_param": (False, "Sheet1"),
@@ -537,16 +585,19 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:Gene"]),
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             In humans (NCBITaxon 9606) the publication PMC:PMC11401200 has an excel downloadable at https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx
             who's Sheet1 for the first 200000 rows connects human genes in column E with human genes in column B with the predicate biolink:associated_with_resistance_to
             through a lasso regression (n=969, coeffs in column C)
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11401200",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx",
             "ext_param": (False, "Sheet1"),
@@ -565,11 +616,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:Gene"]),
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             prioritize biolink:Gene for both subject and object
             predicate is associated_with_resistance_to
             n-969, strength=C for LASSO regression.
@@ -577,8 +629,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             url for download at https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx
             - use end at row 200,000 of Sheet1.
             object in col B, subject col E
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11401200",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11401200/bin/mmc3.xlsx",
             "ext_param": (False, "Sheet1"),
@@ -597,11 +651,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:Gene"]),
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             I want a new template I'll add sections to from a supplemental data mr chet gepetit.
             My paprer is PMC:PMC10434204 and I want you to donwload the hyper uber important critical
             supplemental table at https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx.
@@ -613,8 +668,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             The assertion strength is in hyper important (SURPRISE TANGENT) column E.
             The subject is in the beautiful engligh column of cornwall, sorry I mean the subject is overriden and in the literal column B (obj=D).
             The predicate is column associated_with and boost the almighty holy organism taxon for both object and subject.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC10434204",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx",
             "ext_param": (False, "SupplementalTable_3"),
@@ -634,16 +691,19 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:OrganismTaxon"]),
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Romero has a paper in pubmed central that is PMC:PMC10434204 with a file at URL https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx
             this file has a table of SupplementalTable_3 that starting at row #5 connectes taxa in column B with taxa in column D through associations with eachother.
             This was done using an LME model with an FDR of 10 percent on a cohort of 474. The pvalue is in H while the relationship strength is in column E.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC10434204",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx",
             "ext_param": (False, "SupplementalTable_3"),
@@ -663,11 +723,12 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:OrganismTaxon"]),
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Romero = PMC:PMC10434204
             location: https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx @ SupplementalTable_3 [5:]
             n=474
@@ -680,8 +741,10 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
             pred: associated_with
             prioritize biolink:OrganismTaxon node wide
             do not avoid any biolink:Category node-wide
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC10434204",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/10434204/bin/spectrum.03429-22-s0001.xlsx",
             "ext_param": (False, "SupplementalTable_3"),
@@ -701,15 +764,15 @@ HUMAN_CURATED_EXAMPLES: list[Example] = [
                 (True, ["biolink:OrganismTaxon"]),
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
 ]
 
 HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             From Wang et al.'s study on T helper cell differentiation (PMC:PMC6555748),
             download the supplemental Excel at https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx.
             Use sheet "A. Th1 and Th2 pathway" starting at row 3.
@@ -720,8 +783,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             All entries map to NCBITaxon:9606.
             Boost genes; drop proteins.
             Predicate: biolink:associated_with.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC6555748",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx",
             "ext_param": (False, "A. Th1 and Th2 pathway"),
@@ -744,19 +809,22 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (True, ["biolink:Protein"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Wang PMC6555748 excel sheet T helper: 
             https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx,
             use sheet A. Th1 and Th2 pathway @ row 3.
             n = 59; p = C (FDR BH); strength = D; method = Spearman;
             subj=A; obj=Haemophilus; taxon 9606; predicate associated_with;
             prioritize gene; avoid protein.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC6555748",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx",
             "ext_param": (False, "A. Th1 and Th2 pathway"),
@@ -779,11 +847,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (True, ["biolink:Protein"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Wang et al. T helper pathways (PMC:PMC6555748):
             Download at https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx, 
             sheet A. Th1 and Th2 pathway, start row 3. 
@@ -791,8 +860,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             Column C holds p-values (BH); column D the Spearman rho. 
             Map subjects A and objects Haemophilus to human (9606).
             Boost Gene class; drop Protein.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC6555748",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/6555748/bin/12931_2019_1085_MOESM5_ESM.xlsx",
             "ext_param": (False, "A. Th1 and Th2 pathway"),
@@ -815,11 +886,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (True, ["biolink:Protein"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Wu et al. microgravity effects (PMC:PMC11166937):
             File: https://pmc.ncbi.nlm.nih.gov/articles/instance/11166937/bin/41467_2023_42013_MOESM4_ESM.csv (CSV, default comma).
             Start at first row.
@@ -830,8 +902,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             Map all to NCBITaxon:9606.
             Predicate: biolink:affects.
             Boost both Gene and OrganismTaxon.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC11166937",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/11166937/bin/41467_2023_42013_MOESM4_ESM.csv",
             "ext_param": (True, ","),
@@ -850,11 +924,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:Gene", "biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             From Zhou et al. metabolite correlations (PMC:PMC9153113),
             download XLS from https://pmc.ncbi.nlm.nih.gov/articles/instance/9153113/bin/40168_2022_1271_MOESM1_ESM.xls.
             Table S29, start at row 4.
@@ -864,8 +939,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             Subject in A; object p-Hydroxyphenylacetic acid.
             Predicate: biolink:correlated_with.
             Boost OrganismTaxon.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC9153113",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9153113/bin/40168_2022_1271_MOESM1_ESM.xls",
             "ext_param": (False, "Table S29"),
@@ -882,11 +959,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:12345678
             https://example.com/data_table.tsv
             delimiter = "\t"
@@ -899,8 +977,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             object = column 2
             predicate = biolink:related_to
             boost PhenotypicFeature, drop Gene.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:12345678",
             "url": "https://example.com/data_table.tsv",
             "ext_param": (True, "\t"),
@@ -921,11 +1001,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC9999999
             https://example.org/results.csv
             default comma
@@ -938,8 +1019,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             object = outcome B
             predicate = biolink:impacts
             boost ClinicalFinding.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC9999999",
             "url": "https://example.org/results.csv",
             "ext_param": (True, ","),
@@ -954,11 +1037,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:ClinicalFinding"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:22222222 supplemental macro file:
             https://data.example.net/supplement.xlsm
             sheet MacroData (rows 10 to 500)
@@ -971,8 +1055,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             pred = biolink:modulates
             taxon = NCBITaxon:10090
             boost OrganismTaxon, drop ChemicalEntity.
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:22222222",
             "url": "https://data.example.net/supplement.xlsm",
             "ext_param": (False, "MacroData"),
@@ -995,11 +1081,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:ChemicalEntity"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Publication PMC:PMC7000123
             download https://pmc.ncbi.nlm.nih.gov/articles/instance/7000123/bin/data_fig2.xlsx
             use sheet Fig2Data
@@ -1013,8 +1100,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             object = column E (ChemicalEntity)
             predicate = biolink:associated_with
             boost ChemicalEntity; drop Pathway
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC7000123",
             "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/7000123/bin/data_fig2.xlsx",
             "ext_param": (False, "Fig2Data"),
@@ -1035,11 +1124,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:Pathway"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC8888888
             https://data.server.com/table.tsv
             default TSV delimiter
@@ -1053,8 +1143,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             object = Y
             pred = biolink:affects
             boost OrganismTaxon
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC8888888",
             "url": "https://data.server.com/table.tsv",
             "ext_param": (True, "\t"),
@@ -1072,11 +1164,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:33333333 supplementary xls:
             https://ftp.example.net/data/supplement.xls
             sheet DataSheet
@@ -1090,8 +1183,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             pred = biolink:correlated_with
             boost PhenotypicFeature
             drop Taxon
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:33333333",
             "url": "https://ftp.example.net/data/supplement.xls",
             "ext_param": (False, "DataSheet"),
@@ -1110,11 +1205,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:Taxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             From PMID:44444444 macro workbook:
             https://files.example.com/exp_data.xlsm
             sheet MacroResults rows 10-500
@@ -1127,8 +1223,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             pred = biolink:modulates
             taxon = NCBITaxon:10116
             boost OrganismTaxon; drop ChemicalEntity
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:44444444",
             "url": "https://files.example.com/exp_data.xlsm",
             "ext_param": (False, "MacroResults"),
@@ -1151,11 +1249,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:ChemicalEntity"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:66666666
             http://data.test.org/measurements.xlsx
             sheet Measurements
@@ -1169,8 +1268,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj=B
             pred=biolink:impacts
             boost PhenotypicFeature
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:66666666",
             "url": "http://data.test.org/measurements.xlsx",
             "ext_param": (False, "Measurements"),
@@ -1187,11 +1288,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:PhenotypicFeature"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC7777777 ftp://ftp.example.org/exp/data.csv
             default comma
             start=1
@@ -1204,8 +1306,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj=treatmentY
             pred=biolink:modulates
             boost Gene
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC7777777",
             "url": "ftp://ftp.example.org/exp/data.csv",
             "ext_param": (True, ","),
@@ -1224,11 +1328,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             Publication PMID:77788899
             https://files.test.com/info.xlsx
             use sheet "Study Data 2025"
@@ -1241,8 +1346,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj=N
             pred=biolink:related_to
             boost ClinicalFinding, Protein
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:77788899",
             "url": "https://files.test.com/info.xlsx",
             "ext_param": (False, "Study Data 2025"),
@@ -1261,11 +1368,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (False, ["biolink:ClinicalFinding", "biolink:Protein"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC8880001
             https://data.host.org/genomics.csv
             default delimiter
@@ -1280,8 +1388,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj=B
             pred=biolink:interacts_with
             boost OrganismTaxon
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC8880001",
             "url": "https://data.host.org/genomics.csv",
             "ext_param": (True, ","),
@@ -1299,11 +1409,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:99900011
             https://research.org/data/set.xlsx
             sheet Main
@@ -1318,8 +1429,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             pred = biolink:causes
             boost PhenotypicFeature
             drop OrganismTaxon
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:99900011",
             "url": "https://research.org/data/set.xlsx",
             "ext_param": (False, "Main"),
@@ -1340,11 +1453,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "drop_cls": [
                 (False, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:13131313 xlsx at https://files.test.org/data.xlsx sheet Complex
             start=3
             n=250
@@ -1356,8 +1470,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             pred=biolink:modifies
             boost OrganismTaxon then Gene
             drop ChemicalEntity then Pathway
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:13131313",
             "url": "https://files.test.org/data.xlsx",
             "ext_param": (False, "Complex"),
@@ -1381,11 +1497,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
                 (False, ["biolink:ChemicalEntity"]),
                 (False, ["biolink:Pathway"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC2222111 https://host.org/info.csv default comma
             start row 10
             n in col Z
@@ -1397,8 +1514,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj col B
             pred=biolink:related_to
             boost OrganismTaxon
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC2222111",
             "url": "https://host.org/info.csv",
             "ext_param": (True, ","),
@@ -1417,11 +1536,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:14141414 file at https://sci.org/dataset.xlsx
             sheet name = "RESULTS_Summary"
             start row 2
@@ -1434,8 +1554,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj col K
             pred=biolink:impacts
             boost ClinicalFinding
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:14141414",
             "url": "https://sci.org/dataset.xlsx",
             "ext_param": (False, "RESULTS_Summary"),
@@ -1454,11 +1576,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:ClinicalFinding"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC3131313 https://repo.org/data.xls sheet DataMix
             start row 5
             sample = 300
@@ -1469,8 +1592,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj = col P
             pred = biolink:correlated_with
             boost PhenotypicFeature
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC3131313",
             "url": "https://repo.org/data.xls",
             "ext_param": (False, "DataMix"),
@@ -1489,11 +1614,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:PhenotypicFeature"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:15151515 file.csv delimiter=COMMA start=1
             n=50
             p=col A
@@ -1504,8 +1630,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj col D
             pred biolink:associated_with
             boost Protein
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:15151515",
             "url": "file.csv",
             "ext_param": (True, ","),
@@ -1524,11 +1652,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:Protein"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMC:PMC16161616 https://data.alpha.org/🧬_sheet.xlsx
             sheet "Data 🧬"
             start row 6
@@ -1541,8 +1670,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj=J
             pred=biolink:coexists_with
             boost OrganismTaxon
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMC:PMC16161616",
             "url": "https://data.alpha.org/🧬_sheet.xlsx",
             "ext_param": (False, "Data 🧬"),
@@ -1561,11 +1692,12 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:OrganismTaxon"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
     Example(
-        input=collapse("""
+        input=collapse(
+            """
             PMID:17171717 https://data.mix.org/mix.xlsx
             sheet mixedCASE
             start row 8
@@ -1578,8 +1710,10 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             obj=col O
             pred=biolink:affects
             boost Gene
-        """),
-        output=collapse("""{
+        """
+        ),
+        output=collapse(
+            """{
             "pub": "PMID:17171717",
             "url": "https://data.mix.org/mix.xlsx",
             "ext_param": (False, "mixedCASE"),
@@ -1597,7 +1731,11 @@ HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES: list[Example] = [
             "boost_cls": [
                 (True, ["biolink:Gene"]),
             ],
-        }"""),
+        }"""
+        ),
     ),
-
 ]
+
+EXAMPLES: list[Example] = (
+    HUMAN_CURATED_EXAMPLES + HUMAN_VALIDATED_GPT_o4_MINI_HIGH_CURATED_EXAMPLES
+)
