@@ -1,7 +1,7 @@
 __author__ = "Skye Lane Goetz"
 
 from src.table_config_agent.utils import collapse
-from langchain.schema import Example
+from langchain.schemas import Example
 
 
 HUMAN_CURATED_TEMPLATE_EXAMPLES: list[Example] = [

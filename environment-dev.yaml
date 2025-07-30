@@ -23,6 +23,7 @@ dependencies:
   - flake8
   - mypy
   - pytest
+  - pytest-mypy-plugins
   # -- PROD.PIP -- #
   - pip
   - pip:
