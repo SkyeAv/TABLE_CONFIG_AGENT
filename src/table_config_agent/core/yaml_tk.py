@@ -3,9 +3,9 @@ __author__ = "Skye Lane Goetz"
 from src.table_config_agent.core.utils import load_model, extension_from_url
 from src.table_config_agent.models.template_cfg import Template
 from ruamel.yaml.error import YAMLError
-from typing import Any, Optional
 from ruamel.yaml import YAML
 from pathlib import Path
+from typing import Any
 
 yaml = YAML()
 
@@ -46,11 +46,35 @@ def slim_to_template(
     pred = slim_cfg["pred"]
     taxon = slim_cfg["taxon"]
     boost_cls = slim_cfg["boost_cls"]
-    boost_subj: list[str] = [category for col, categories in boost_cls if col for category in categories if category]
-    boost_obj: list[str] = [category for col, categories in boost_cls if not col for category in categories if category]
+    boost_subj: list[str] = [
+        category
+        for col, categories in boost_cls
+        if col
+        for category in categories
+        if category
+    ]
+    boost_obj: list[str] = [
+        category
+        for col, categories in boost_cls
+        if not col
+        for category in categories
+        if category
+    ]
     drop_cls = slim_cfg["drop_cls"]
-    drop_subj: list[str] = [category for col, categories in drop_cls if col for category in categories if category]
-    drop_obj: list[str] = [category for col, categories in drop_cls if not col for category in categories if category]
+    drop_subj: list[str] = [
+        category
+        for col, categories in drop_cls
+        if col
+        for category in categories
+        if category
+    ]
+    drop_obj: list[str] = [
+        category
+        for col, categories in drop_cls
+        if not col
+        for category in categories
+        if category
+    ]
 
     template_cfg: dict[str, dict[str, Any]] = {
         "location": {
