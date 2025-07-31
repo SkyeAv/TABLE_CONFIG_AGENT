@@ -1,5 +1,3 @@
-__author__ = "Skye Lane Goetz"
-
 from typing import Optional, Annotated, TypeAlias, Literal, Union
 from pydantic import BaseModel, HttpUrl, Field
 

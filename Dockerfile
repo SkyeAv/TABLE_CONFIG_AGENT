@@ -12,5 +12,5 @@ RUN micromamba env create -f /tmp/environment.yaml -n table-config-agent && micr
 ENV PATH=/opt/conda/envs/myenv/bin:$PATH
 
 # typer cli
-ENTRYPOINT ["python3", "-m", "src/table_config_agent/ui/cli.py"]
+ENTRYPOINT ["cli"]
 CMD ["--help"]

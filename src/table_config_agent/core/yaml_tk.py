@@ -1,5 +1,3 @@
-__author__ = "Skye Lane Goetz"
-
 from src.table_config_agent.core.utils import load_model, extension_from_url
 from src.table_config_agent.models.template_cfg import Template
 from ruamel.yaml.error import YAMLError

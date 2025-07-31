@@ -1,12 +1,13 @@
-__author__ = "Skye Lane Goetz"
-
 from pydantic import BaseModel, Field, FilePath, field_validator
-from huggingface_hub import HfApi, RepositoryNotFoundError
+from huggingface_hub.errors import RepositoryNotFoundError
+from huggingface_hub import HfApi
+from pathlib import Path
+from typing import Union
 
 
 class ModelConfig(BaseModel):
     from_transformers: str = Field(...)
-    using_chroma_db: FilePath = Field(...)
+    using_chroma_db: Union[Path, FilePath] = Field(...)
     seed: int = Field(...)
 
     @field_validator("from_transformers")

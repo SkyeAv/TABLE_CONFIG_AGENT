@@ -1,5 +1,3 @@
-__author__ = "Skye Lane goetz"
-
 from src.table_config_agent.core.yaml_tk import slim_to_template
 from pydantic import HttpUrl
 from typing import Any

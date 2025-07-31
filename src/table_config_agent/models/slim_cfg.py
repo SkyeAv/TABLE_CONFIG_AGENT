@@ -1,5 +1,3 @@
-__author__ = "Skye Lane Goetz"
-
 from pydantic import BaseModel, HttpUrl, Field
 from typing import Optional
 

@@ -1,10 +1,11 @@
-__author__ = "Skye Lane Goetz"
-
 from pydantic import ValidationError, BaseModel
+from pathlib import Path, PurePath
 from urllib.parse import urlparse
 from typing import TypeVar, Any
-from pathlib import PurePath
+from datetime import datetime
 from textwrap import dedent
+import shutil
+import lzma
 
 
 def collapse(x: str) -> str:
@@ -26,3 +27,11 @@ def extension_from_url(url: str) -> str:  # xlsx is default b/c its the most com
     urlpath = urlparse(url).path
     pure_urlpath: PurePath = PurePath(urlpath)
     return "".join(pure_urlpath.suffixes)[1:] or "xlsx"
+
+
+def xz_backup(db_p: Path, fmt: str = r"%Y%m%d") -> None:
+    timestamp: str = datetime.now().strftime(fmt)
+    xz_p = db_p.with_name(db_p.stem + timestamp + db_p.suffix + ".xz")
+    with db_p.open("rb") as f_in, lzma.open(xz_p, "wb") as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    return None

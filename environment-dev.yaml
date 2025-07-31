@@ -9,15 +9,16 @@ dependencies:
   - python=3.11
   - pytorch=2.3.0
   - pytorch-cuda=12.1
-  - bitsandbytes
   - accelerate
   - transformers>=4.40
   - langchain
+  - langchain-community
   - pydantic
   - huggingface_hub
   - ruamel.yaml
   - chromadb
   - typer
+  - numpy
   # -- DEV -- #
   - black
   - flake8
@@ -28,3 +29,7 @@ dependencies:
   - pip
   - pip:
     - bmt
+    - -e .
+    - bitsandbytes
+variables:
+  BNB_CUDA_VERSION: "121"
