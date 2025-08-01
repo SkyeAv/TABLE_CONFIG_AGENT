@@ -40,16 +40,15 @@ def build_chroma_db(db_p: Path, cfg: dict[str, Any]) -> None:
     tokenizer, model = from_transformers(cfg["from_transformers"])
     template_docs: list[Document] = [
         Document(
-            page_content=f"Q: {example.input}\nA: {example.output}",
-            metadata={"input": example.input, "output": example.output},
+            page_content=f'Q: {example["input"]}\nA: {example["output"]}',
+            metadata={"input": example["input"], "output": example["output"]},
         )
         for example in TEMPLATE_EXAMPLES
     ]
     db = Chroma.from_documents(
         documents=template_docs,
         embedding=HuggingFaceEmbeddings(tokenizer, model),
-        persist_directory=db_p,
+        persist_directory=db_p.as_posix(),
         collection_name="template_examples",
     )
-    db.persist()
     return None

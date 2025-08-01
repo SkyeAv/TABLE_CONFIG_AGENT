@@ -15,7 +15,7 @@ def chroma_db(
         ...,
         "-p",
         "--db-path",
-        help="path specifiying where you want to save and what you want to name the chroma_db build",
+        help="path specifiying the directory where you want to save the chroma_db build",
     ),
     model: str = typer.Option(
         ..., "-m", "--model-config", help="path to your ModelConfig (model.yaml)"

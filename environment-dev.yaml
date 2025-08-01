@@ -30,6 +30,3 @@ dependencies:
   - pip:
     - bmt
     - -e .
-    - bitsandbytes
-variables:
-  BNB_CUDA_VERSION: "121"
