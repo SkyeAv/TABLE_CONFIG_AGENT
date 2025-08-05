@@ -12,7 +12,7 @@ app = typer.Typer()
 @app.command()  # type: ignore
 def chroma_db(
     db_path: str = typer.Option(
-        ...,
+        "resources/chroma_db",
         "-p",
         "--db-path",
         help="path specifiying the directory where you want to save the chroma_db build",
