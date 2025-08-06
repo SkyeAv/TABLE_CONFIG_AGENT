@@ -13,12 +13,15 @@ dependencies:
   - transformers>=4.40
   - langchain
   - langchain-community
+  - langchain-chroma
+  - langchain-huggingface
   - pydantic
   - huggingface_hub
   - ruamel.yaml
   - chromadb
   - typer
   - numpy
+  - tqdm
   # -- PROD.PIP -- #
   - pip
   - pip:

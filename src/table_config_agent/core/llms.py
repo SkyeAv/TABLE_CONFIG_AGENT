@@ -1,4 +1,7 @@
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
+from contextlib import contextmanager
+from typing import ContextManager
+from tqdm import tqdm
 import numpy as np
 import random
 import torch
@@ -11,11 +14,36 @@ def set_seed(seed: int) -> None:
     return None
 
 
-def from_transformers(hf_model: str) -> tuple[AutoTokenizer, AutoModel]:
+@contextmanager  # type: ignore
+def suppress_tqdm() -> ContextManager:  # type: ignore
+    original_init = tqdm.__init__
+
+    def patched_init(self, *args, **kwargs) -> None:  # type: ignore
+        kwargs["disable"] = True
+        original_init(self, *args, **kwargs)
+        return None
+
+    tqdm.__init__ = patched_init
+    try:
+        yield
+    finally:
+        tqdm.__init__ = original_init
+
+
+def from_transformers(
+    hf_model: str, offload_folder: str = "offload"
+) -> tuple[AutoTokenizer, AutoModel, AutoModelForCausalLM]:
     tokenizer = AutoTokenizer.from_pretrained(hf_model)  # type: ignore
-    model = AutoModel.from_pretrained(
-        hf_model,
-        device_map="auto",
-        torch_dtype="float16",
-    )
-    return (tokenizer, model)
+    with suppress_tqdm():
+        embeding_model = AutoModel.from_pretrained(
+            hf_model, device_map={"": "cpu"}, torch_dtype="float16"
+        ).eval()
+        pipeline_model = AutoModelForCausalLM.from_pretrained(
+            hf_model,
+            device_map="auto",
+            torch_dtype="float16",
+            offload_folder=offload_folder,
+            offload_state_dict=True,
+            low_cpu_mem_usage=True,
+        ).eval()
+    return (tokenizer, embeding_model, pipeline_model)

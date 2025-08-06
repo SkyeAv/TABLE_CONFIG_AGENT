@@ -1,24 +1,26 @@
+from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, pipeline  # type: ignore
 from src.table_config_agent.core.llms import from_transformers, set_seed
 from src.table_config_agent.chroma_db.build import HuggingFaceEmbeddings
 from src.table_config_agent.models.slim_cfg import SectionConfigSlim
 from langchain_core.runnables import Runnable, RunnableLambda
-from transformers import AutoTokenizer, AutoModel, pipeline  # type: ignore
 from langchain.output_parsers import PydanticOutputParser
-from langchain_community.llms import HuggingFacePipeline
-from langchain_community.vectorstores import Chroma
+from langchain_huggingface import HuggingFacePipeline
 from langchain.prompts import PromptTemplate
+from langchain_chroma import Chroma
+from pathlib import Path
 from typing import Any
 
 
 def transformers_pipeline(
-    tokenizer: AutoTokenizer, model: AutoModel
+    tokenizer: AutoTokenizer, pipeline_model: AutoModelForCausalLM
 ) -> HuggingFacePipeline:
     return HuggingFacePipeline(
         pipeline=pipeline(  # type: ignore
             "text-generation",  # deepseek-coder doesn't support the other modes
             tokenizer=tokenizer,
-            model=model,
+            model=pipeline_model,
             do_sample=False,
+            temperature=0.0,  # I have to explicitly specify this to stop it from autofilling to 0.7 and throwing an error
             max_new_tokens=1024,
             repetition_penalty=1.2,
             return_full_text=False,
@@ -28,14 +30,15 @@ def transformers_pipeline(
 
 def chroma_db_fewshots(
     tokenizer: AutoTokenizer,
-    model: AutoModel,
-    chroma_db: str,
+    embedding_model: AutoModel,
+    chroma_p: Path,
     user_input: str,
     k: int = 8,
 ) -> list[Any]:
+    chroma_db: str = chroma_p.as_posix()
     db = Chroma(
         persist_directory=chroma_db,
-        embedding_function=HuggingFaceEmbeddings(tokenizer, model),
+        embedding_function=HuggingFaceEmbeddings(tokenizer, embedding_model),
         collection_name="template_examples",
     )
     fewshots = db.similarity_search(query=user_input, k=8)
@@ -95,14 +98,17 @@ Your last output was invalid JSON. Please fix the formatting and re-emit a valid
 
 def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
     set_seed(cfg["seed"])
-    tokenizer, model = from_transformers(cfg["from_transformers"])
-    pipe = transformers_pipeline(tokenizer, model)
+    tokenizer, embeding_model, pipeline_model = from_transformers(
+        cfg["from_transformers"]
+    )
+    pipe = transformers_pipeline(tokenizer, pipeline_model)
+    _ = pipe.invoke("Hai")  # reduces latency for actual runs
     parser = PydanticOutputParser(pydantic_object=SectionConfigSlim)
     pydantic_model: str = parser.get_format_instructions()
 
     def format_agent_prompt(user_input: str) -> str:
         fewshots = chroma_db_fewshots(
-            tokenizer, model, cfg["using_chroma_db"], user_input
+            tokenizer, embeding_model, cfg["using_chroma_db"], user_input
         )
         fewshot_str = "\n".join(fewshots)
         return agent_prompt().format(
