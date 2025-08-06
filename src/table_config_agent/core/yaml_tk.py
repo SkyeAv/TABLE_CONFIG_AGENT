@@ -17,11 +17,25 @@ def load_yaml(file_path: Path) -> Any:
         msg: str = f"CODE:3 | {posix_file_path} not found"
         raise RuntimeError(msg)
     except PermissionError:
-        msg = f"CODE:4 | Permission denied: {posix_file_path}"
+        msg = f"CODE:4A | Permission denied: {posix_file_path}"
         raise RuntimeError(msg)
     except YAMLError as e:
         err: str = str(e)
-        msg = f"CODE:5 | YAML parsing error in {posix_file_path} | {err}"
+        msg = f"CODE:5A | YAML parsing error in {posix_file_path} | {err}"
+        raise RuntimeError(msg)
+
+
+def write_template(yaml_dict: dict[str, Any], output_path: Path) -> None:
+    posix_output_path: str = output_path.as_posix()
+    try:
+        with open(posix_output_path, "w", encoding="utf-8") as f:
+            yaml.dump(yaml_dict, f)
+            return None
+    except PermissionError:
+        msg = f"CODE:4B | Permission denied: {posix_output_path}"
+    except YAMLError as e:
+        err: str = str(e)
+        msg = f"CODE:5B | YAML parsing error in {posix_output_path} | {err}"
         raise RuntimeError(msg)
 
 

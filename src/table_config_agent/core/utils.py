@@ -1,3 +1,5 @@
+from src.table_config_agent.models.model_cfg import ModelConfig
+from src.table_config_agent.core.yaml_tk import load_yaml
 from pydantic import ValidationError, BaseModel
 from pathlib import Path, PurePath
 from urllib.parse import urlparse
@@ -35,3 +37,8 @@ def xz_backup(db_p: Path, fmt: str = r"%Y%m%d") -> None:
     with db_p.open("rb") as f_in, lzma.open(xz_p, "wb") as f_out:
         shutil.copyfileobj(f_in, f_out)
     return None
+
+
+def model_cfg(model_p: Path) -> dict[str, Any]:
+    model_yaml: Any = load_yaml(model_p)
+    return load_model(model_yaml, ModelConfig).model_dump()
