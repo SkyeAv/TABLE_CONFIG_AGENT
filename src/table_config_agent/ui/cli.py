@@ -1,7 +1,7 @@
-from src.table_config_agent.core.utils import xz_backup, model_cfg, write_template
+from src.table_config_agent.core.yaml_tk import slim_to_template, write_template
 from src.table_config_agent.models.slim_cfg import SectionConfigSlim
 from src.table_config_agent.chroma_db.build import build_chroma_db
-from src.table_config_agent.core.yaml_tk import slim_to_template
+from src.table_config_agent.core.utils import xz_backup, model_cfg
 from src.table_config_agent.models.template_cfg import Template
 from src.table_config_agent.core.chain import build_chain
 from langchain_core.runnables import Runnable
@@ -11,7 +11,7 @@ import typer
 app = typer.Typer()
 
 
-@app.command()  # type: ignore
+@app.command()
 def chroma_build(
     db_path: str = typer.Option(
         "resources/chroma_db",
@@ -39,7 +39,7 @@ def chroma_build(
     return None
 
 
-@app.command()  # type: ignore
+@app.command()
 def invoke_agent(
     user_input: str = typer.Option(
         ...,
@@ -72,10 +72,10 @@ def invoke_agent(
     model_p: Path = Path(model).resolve()
     output_p: Path = Path(output_path).resolve()
     output_p.parent.mkdir(parents=True, exist_ok=True)
-    chain: Runnable = build_chain(model_cfg(model_p))
+    chain: Runnable = build_chain(model_cfg(model_p))  # type: ignore
     output: SectionConfigSlim = chain.invoke(user_input)
     template: Template = slim_to_template(output, user_name, user_organization)
-    write_template(template, output_p)
+    write_template(template.model_dump(), output_p)
     return None
 
 

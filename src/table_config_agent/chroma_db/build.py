@@ -9,7 +9,7 @@ from pathlib import Path
 import torch
 
 
-class HuggingFaceEmbeddings(Embeddings):  # type: ignore
+class HuggingFaceEmbeddings(Embeddings):
     def __init__(self: Self, tokenizer: AutoTokenizer, model: AutoModel) -> None:
         super().__init__()
         self.model = model
@@ -23,12 +23,12 @@ class HuggingFaceEmbeddings(Embeddings):  # type: ignore
         return self._embed_text(text)
 
     def _embed_text(self, text: str) -> list[float]:
-        inputs = self.tokenizer(
+        inputs = self.tokenizer(  # type: ignore
             text, return_tensors="pt", truncation=True, padding=True, max_length=4096
         )
-        inputs = {k: v.to(self.model.device) for k, v in inputs.items()}
+        inputs = {k: v.to(self.model.device) for k, v in inputs.items()}  # type: ignore
         with torch.no_grad():
-            outputs = self.model(**inputs)
+            outputs = self.model(**inputs)  # type: ignore
         embedding = (
             outputs.last_hidden_state.mean(dim=1).squeeze().cpu().numpy().tolist()
         )

@@ -2,7 +2,7 @@ from src.table_config_agent.core.llms import from_transformers, set_seed
 from src.table_config_agent.chroma_db.build import HuggingFaceEmbeddings
 from src.table_config_agent.models.slim_cfg import SectionConfigSlim
 from langchain_core.runnables import Runnable, RunnableLambda
-from transformers import AutoTokenizer, AutoModel, pipeline
+from transformers import AutoTokenizer, AutoModel, pipeline  # type: ignore
 from langchain.output_parsers import PydanticOutputParser
 from langchain_community.llms import HuggingFacePipeline
 from langchain_community.vectorstores import Chroma
@@ -14,7 +14,7 @@ def transformers_pipeline(
     tokenizer: AutoTokenizer, model: AutoModel
 ) -> HuggingFacePipeline:
     return HuggingFacePipeline(
-        pipeline=pipeline(
+        pipeline=pipeline(  # type: ignore
             "text-generation",  # deepseek-coder doesn't support the other modes
             tokenizer=tokenizer,
             model=model,
@@ -27,7 +27,11 @@ def transformers_pipeline(
 
 
 def chroma_db_fewshots(
-    tokenizer: AutoTokenizer, model: AutoModel, chroma_db: str, user_input: str, k=8
+    tokenizer: AutoTokenizer,
+    model: AutoModel,
+    chroma_db: str,
+    user_input: str,
+    k: int = 8,
 ) -> list[Any]:
     db = Chroma(
         persist_directory=chroma_db,
@@ -35,7 +39,7 @@ def chroma_db_fewshots(
         collection_name="template_examples",
     )
     fewshots = db.similarity_search(query=user_input, k=8)
-    return [doc.formatted for doc in fewshots]
+    return [doc.formatted for doc in fewshots]  # type: ignore
 
 
 def agent_prompt() -> PromptTemplate:
@@ -89,7 +93,7 @@ Your last output was invalid JSON. Please fix the formatting and re-emit a valid
     )
 
 
-def build_chain(cfg: dict[str, Any]) -> Runnable:
+def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
     set_seed(cfg["seed"])
     tokenizer, model = from_transformers(cfg["from_transformers"])
     pipe = transformers_pipeline(tokenizer, model)
