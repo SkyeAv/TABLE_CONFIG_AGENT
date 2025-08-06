@@ -1,5 +1,4 @@
 from src.table_config_agent.models.model_cfg import ModelConfig
-from src.table_config_agent.core.yaml_tk import load_yaml
 from pydantic import ValidationError, BaseModel
 from pathlib import Path, PurePath
 from urllib.parse import urlparse
@@ -40,5 +39,9 @@ def xz_backup(db_p: Path, fmt: str = r"%Y%m%d") -> None:
 
 
 def model_cfg(model_p: Path) -> dict[str, Any]:
+    from src.table_config_agent.core.yaml_tk import (
+        load_yaml,
+    )  # circular import prevention... yay!
+
     model_yaml: Any = load_yaml(model_p)
     return load_model(model_yaml, ModelConfig).model_dump()  # type: ignore

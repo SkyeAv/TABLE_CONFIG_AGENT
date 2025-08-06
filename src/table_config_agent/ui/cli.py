@@ -69,6 +69,7 @@ def invoke_agent(
         ..., "-m", "--model-config", help="path to your ModelConfig (model.yaml)"
     ),
 ) -> None:
+    """Invokes the TableConfigAgent turning a natural language input into a Tablassert TableConfig"""
     model_p: Path = Path(model).resolve()
     output_p: Path = Path(output_path).resolve()
     output_p.parent.mkdir(parents=True, exist_ok=True)
