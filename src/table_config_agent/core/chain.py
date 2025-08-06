@@ -33,7 +33,7 @@ def chroma_db_fewshots(
     embedding_model: AutoModel,
     chroma_p: Path,
     user_input: str,
-    k: int = 8,
+    k: int,
 ) -> list[Any]:
     chroma_db: str = chroma_p.as_posix()
     db = Chroma(
@@ -108,7 +108,11 @@ def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
 
     def format_agent_prompt(user_input: str) -> str:
         fewshots = chroma_db_fewshots(
-            tokenizer, embeding_model, cfg["using_chroma_db"], user_input
+            tokenizer,
+            embeding_model,
+            cfg["using_chroma_db"],
+            user_input,
+            cfg["fewshot_count"],
         )
         fewshot_str = "\n".join(fewshots)
         return agent_prompt().format(
@@ -124,14 +128,14 @@ def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
 
     def invoke_with_retry(user_input: str) -> SectionConfigSlim:
         initial_prompt: str = format_agent_prompt(user_input)
-        initial_raw: str = pipe.invoke(initial_prompt)[0]["generated_text"]
+        initial_raw: str = pipe.invoke(initial_prompt)[0]["generated_text"]  # type: ignore
 
         try:
             return parser.parse(initial_raw)
         except Exception as e:
             error_message: str = str(e)
             retry_prompt_text: str = format_retry_prompt(error_message, initial_raw)
-            retry_raw: str = pipe.invoke(retry_prompt_text)[0]["generated_text"]
+            retry_raw: str = pipe.invoke(retry_prompt_text)[0]["generated_text"]  # type: ignore
 
             try:
                 return parser.parse(retry_raw)

@@ -16,6 +16,8 @@ class HuggingFaceEmbeddings(Embeddings):
         super().__init__()
         self.embedding_model = embedding_model
         self.tokenizer = tokenizer
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token
         return None
 
     def embed_documents(self: Self, texts: list[str]) -> list[list[float]]:
@@ -39,7 +41,9 @@ class HuggingFaceEmbeddings(Embeddings):
 
 def build_chroma_db(db_p: Path, cfg: dict[str, Any]) -> None:
     set_seed(cfg["seed"])  # set seed first
-    tokenizer, embedding_model, _ = from_transformers(cfg["from_transformers"], cfg["offload_folder"])
+    tokenizer, embedding_model, _ = from_transformers(
+        cfg["from_transformers"], cfg["offload_folder"]
+    )
     template_docs: list[Document] = [
         Document(
             page_content=example["input"],  # just the Q:

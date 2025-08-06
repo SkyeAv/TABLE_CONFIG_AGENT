@@ -9,7 +9,8 @@ class ModelConfig(BaseModel):
     from_transformers: str = Field(...)
     using_chroma_db: Union[Path, FilePath] = Field(...)
     offload_folder: Union[Path, DirectoryPath] = Field(...)
-    seed: int = Field(...)
+    fewshot_count: int = Field(default=4)
+    seed: int = Field(default=87)
 
     @field_validator("from_transformers")
     def model_exists(cls, hypothetical_model: str) -> str:

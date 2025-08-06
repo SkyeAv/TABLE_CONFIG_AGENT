@@ -22,6 +22,9 @@ dependencies:
   - typer
   - numpy
   - tqdm
+  - sentencepiece
+  - tiktoken
+  - blobfile
   # -- PROD.PIP -- #
   - pip
   - pip:

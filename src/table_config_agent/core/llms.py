@@ -34,7 +34,11 @@ def suppress_tqdm() -> ContextManager:  # type: ignore
 def from_transformers(
     hf_model: str, offload_folder: Path
 ) -> tuple[AutoTokenizer, AutoModel, AutoModelForCausalLM]:
-    tokenizer = AutoTokenizer.from_pretrained(hf_model)  # type: ignore
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(hf_model, use_fast=True)  # type: ignore
+        _ = tokenizer.tokenize("Hai")  # Force backend check
+    except Exception:
+        tokenizer = AutoTokenizer.from_pretrained(hf_model, use_fast=False)  # type: ignore
     with suppress_tqdm():
         embeding_model = AutoModel.from_pretrained(
             hf_model, device_map={"": "cpu"}, torch_dtype="float16"
