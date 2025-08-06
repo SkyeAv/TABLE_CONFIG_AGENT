@@ -1,6 +1,7 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
 from contextlib import contextmanager
 from typing import ContextManager
+from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 import random
@@ -31,7 +32,7 @@ def suppress_tqdm() -> ContextManager:  # type: ignore
 
 
 def from_transformers(
-    hf_model: str, offload_folder: str = "offload"
+    hf_model: str, offload_folder: Path
 ) -> tuple[AutoTokenizer, AutoModel, AutoModelForCausalLM]:
     tokenizer = AutoTokenizer.from_pretrained(hf_model)  # type: ignore
     with suppress_tqdm():
@@ -42,7 +43,7 @@ def from_transformers(
             hf_model,
             device_map="auto",
             torch_dtype="float16",
-            offload_folder=offload_folder,
+            offload_folder=offload_folder.as_posix(),
             offload_state_dict=True,
             low_cpu_mem_usage=True,
         ).eval()

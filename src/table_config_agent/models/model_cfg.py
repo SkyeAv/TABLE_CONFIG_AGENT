@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, FilePath, field_validator
+from pydantic import BaseModel, Field, FilePath, DirectoryPath, field_validator
 from huggingface_hub.errors import RepositoryNotFoundError
 from huggingface_hub import HfApi
 from pathlib import Path
@@ -8,6 +8,7 @@ from typing import Union
 class ModelConfig(BaseModel):
     from_transformers: str = Field(...)
     using_chroma_db: Union[Path, FilePath] = Field(...)
+    offload_folder: Union[Path, DirectoryPath] = Field(...)
     seed: int = Field(...)
 
     @field_validator("from_transformers")

@@ -39,7 +39,7 @@ class HuggingFaceEmbeddings(Embeddings):
 
 def build_chroma_db(db_p: Path, cfg: dict[str, Any]) -> None:
     set_seed(cfg["seed"])  # set seed first
-    tokenizer, embedding_model, _ = from_transformers(cfg["from_transformers"])
+    tokenizer, embedding_model, _ = from_transformers(cfg["from_transformers"], cfg["offload_folder"])
     template_docs: list[Document] = [
         Document(
             page_content=example["input"],  # just the Q:

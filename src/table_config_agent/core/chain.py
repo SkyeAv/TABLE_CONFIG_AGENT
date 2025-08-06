@@ -21,7 +21,7 @@ def transformers_pipeline(
             model=pipeline_model,
             do_sample=False,
             temperature=0.0,  # I have to explicitly specify this to stop it from autofilling to 0.7 and throwing an error
-            max_new_tokens=1024,
+            max_new_tokens=512,
             repetition_penalty=1.2,
             return_full_text=False,
         )
@@ -99,7 +99,7 @@ Your last output was invalid JSON. Please fix the formatting and re-emit a valid
 def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
     set_seed(cfg["seed"])
     tokenizer, embeding_model, pipeline_model = from_transformers(
-        cfg["from_transformers"]
+        cfg["from_transformers"], cfg["offload_folder"]
     )
     pipe = transformers_pipeline(tokenizer, pipeline_model)
     _ = pipe.invoke("Hai")  # reduces latency for actual runs
