@@ -41,7 +41,10 @@ def from_transformers(
         tokenizer = AutoTokenizer.from_pretrained(hf_model, use_fast=False)  # type: ignore
     with suppress_tqdm():
         embeding_model = AutoModel.from_pretrained(
-            hf_model, device_map={"": "cpu"}, torch_dtype="float16"
+            hf_model,
+            device_map={"": "cpu"},
+            torch_dtype="float32",
+            low_cpu_mem_usage=False,
         ).eval()
         pipeline_model = AutoModelForCausalLM.from_pretrained(
             hf_model,

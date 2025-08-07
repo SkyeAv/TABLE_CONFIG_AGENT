@@ -28,5 +28,4 @@ dependencies:
   # -- PROD.PIP -- #
   - pip
   - pip:
-    - bmt
     - -e .

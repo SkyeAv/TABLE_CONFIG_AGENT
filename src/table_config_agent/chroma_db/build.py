@@ -1,9 +1,9 @@
 from src.table_config_agent.chroma_db.template_examples import TEMPLATE_EXAMPLES
 from src.table_config_agent.core.llms import from_transformers, set_seed
-from langchain_chroma import Chroma
 from transformers import AutoTokenizer, AutoModel
 from langchain.embeddings.base import Embeddings
 from langchain.schema import Document
+from langchain_chroma import Chroma
 from typing import Any, Self
 from pathlib import Path
 import torch
@@ -16,8 +16,8 @@ class HuggingFaceEmbeddings(Embeddings):
         super().__init__()
         self.embedding_model = embedding_model
         self.tokenizer = tokenizer
-        if self.tokenizer.pad_token is None:
-            self.tokenizer.pad_token = self.tokenizer.eos_token
+        if self.tokenizer.pad_token is None:  # type: ignore
+            self.tokenizer.pad_token = self.tokenizer.eos_token  # type: ignore
         return None
 
     def embed_documents(self: Self, texts: list[str]) -> list[list[float]]:

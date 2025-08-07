@@ -2,13 +2,17 @@ from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, pipelin
 from src.table_config_agent.core.llms import from_transformers, set_seed
 from src.table_config_agent.chroma_db.build import HuggingFaceEmbeddings
 from src.table_config_agent.models.slim_cfg import SectionConfigSlim
+from src.table_config_agent.core.utils import collapse, load_model
 from langchain_core.runnables import Runnable, RunnableLambda
 from langchain.output_parsers import PydanticOutputParser
 from langchain_huggingface import HuggingFacePipeline
 from langchain.prompts import PromptTemplate
 from langchain_chroma import Chroma
+from ast import literal_eval
+from pprint import pprint
 from pathlib import Path
 from typing import Any
+import re
 
 
 def transformers_pipeline(
@@ -42,38 +46,45 @@ def chroma_db_fewshots(
         collection_name="template_examples",
     )
     fewshots = db.similarity_search(query=user_input, k=8)
-    return [doc.formatted for doc in fewshots]  # type: ignore
+    return [doc.metadata["formatted"] for doc in fewshots]
 
 
 def agent_prompt() -> PromptTemplate:
-    # BE CONCIOUS OF NEWLINES AND SPACING FOR THE FINAL PROMPT!!
     return PromptTemplate.from_template(
         """\
-You are a code generation assistant that parses text into structured configurations.
+You are a Python dictionary generation assistant. Your task is to convert structured natural language
+descriptions of tabular metadata into strictly valid Python dictionaries that match the provided schema exactly.
 
-Each input describes metadata about a tabular file, including:
-- the publication source
-- the file location
-- what columns correspond to what fields (e.g., p-values, subjects, etc.)
-- optional enhancements like boosting classes or taxonomic IDs
+Each input describes:
+- the publication source (e.g., PMC ID)
+- the tabular file location
+- how specific columns map to fields (e.g., p-value, subject, object)
+- optional enhancements such as boost classes or taxonomic context
 
-Your job is to convert this into a valid JSON object that conforms to the given schema.
+You MUST respond with:
+- A single Python dictionary
+- Fully valid Python (parsable by `ast.literal_eval`)
+- Matching the schema structure and field types precisely
 
-### Output Schema
+Output Schema (for reference only — do NOT include it in your output):
 {pydantic_model}
 
-### Rules:
-- Every output must be **valid JSON**
-- Return a dictionary matching the schema exactly
-- If a value is a column name, mark the flag as `true` and give the column letter
-- If a value is fixed/constant, mark the flag as `false` and give the literal value
-- If a value is missing or optional, use `null`, `None`, or the default if specified
-- Never include extra text or explanations—only the JSON
+Output Rules:
+- Respond ONLY with the dictionary — no explanations, no markdown, no formatting
+- Use double quotes for all dictionary keys
+- Use double quotes for all string values
+- Use True / False (capitalized) for booleans
+- Use None for missing or null values
+- Use (True, "A") if the field maps to a column
+- Use (False, "value") or (False, value) if the field is a fixed constant
+- Use lists for any collection-type fields
+- Do not use markdown, code blocks, or JSON
+- Do not use single quotes — always use double quotes for keys and string values
 
-You will now see several examples. Follow their format exactly.
+Here are example inputs and their corresponding valid Python dictionary outputs:
 {fewshots}
 
-### New Input
+Now generate the dictionary for the following input:
 {user_input}
 """
     )
@@ -82,18 +93,58 @@ You will now see several examples. Follow their format exactly.
 def retry_prompt() -> PromptTemplate:
     return PromptTemplate.from_template(
         """\
-Your last output was invalid JSON. Please fix the formatting and re-emit a valid response.
+Your previous output was NOT valid Python and could not be interpreted as a dictionary.
 
-### Error Details:
+You must now fix the output and re-emit ONLY a valid Python dictionary.
+
+### DO NOT:
+- Include any text before or after the dictionary (e.g., 'Answer:', 'Here is the result:', etc.)
+- Use markdown formatting (e.g., triple backticks, `python`, etc.)
+- Include any explanation or comments
+- Include fields or values not present in the schema
+
+### DO:
+- Return a clean Python dictionary only — no preamble, no markdown, no explanation
+- Use standard Python syntax:
+  - Double quotes for all dictionary keys
+  - Double quotes for all string values
+  - Capitalized True, False, and None values
+  - Use tuples like (True, "A") or (False, "value")
+  - Use lists where appropriate
+- Match the structure and types of the schema exactly
+- Ensure the entire response is valid Python dictionary syntax (e.g., can be parsed by ast.literal_eval)
+
+### Parsing Error:
 {error_message}
 
-### Original Output:
+### Your Invalid Output:
 {bad_output}
 
-### JSON Schema Instructions:
+### Python Schema (reference only — do NOT include in your output):
 {pydantic_model}
 """
     )
+
+
+def parse_to_dict(raw_text: str) -> dict[str, Any]:
+    cleaned: str = collapse(raw_text)
+    matches = re.search(r"(\{.*\})", cleaned)
+    if not matches:
+        msg: str = f"CODE:8 | No dict-like block found in text {cleaned}"
+        raise RuntimeError(msg)
+    block: str = matches.group(1)
+    block = block.replace("“", '"').replace("”", '"')
+    block = block.replace("‘", "'").replace("’", "'")
+    block = re.sub(r"\bnull\b", "None", block, flags=re.IGNORECASE)
+    block = re.sub(r"\btrue\b", "True", block, flags=re.IGNORECASE)
+    block = re.sub(r"\bfalse\b", "False", block, flags=re.IGNORECASE)
+    block = re.sub(r",\s*([}\]])", r"\1", block)
+    try:
+        return literal_eval(block)  # type: ignore
+    except Exception as e:
+        err: str = str(e)
+        msg = f"CODE:9 | Failed to parse {block} | {err}"
+        raise RuntimeError(msg)
 
 
 def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
@@ -128,20 +179,37 @@ def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
 
     def invoke_with_retry(user_input: str) -> SectionConfigSlim:
         initial_prompt: str = format_agent_prompt(user_input)
-        initial_raw: str = pipe.invoke(initial_prompt)[0]["generated_text"]  # type: ignore
+        initial_raw: str = pipe.invoke(initial_prompt)
+
+        pprint(initial_prompt)
+        print("\n\n")
+        pprint(initial_raw)
+        print("\n\n")
 
         try:
-            return parser.parse(initial_raw)
+            pprint(parse_to_dict(initial_raw))
+            print("\n\n")
+            return load_model(parse_to_dict(initial_raw), SectionConfigSlim)  # type: ignore
         except Exception as e:
             error_message: str = str(e)
-            retry_prompt_text: str = format_retry_prompt(error_message, initial_raw)
-            retry_raw: str = pipe.invoke(retry_prompt_text)[0]["generated_text"]  # type: ignore
+            assert isinstance(initial_raw, str)
+            retry_prompt: str = format_retry_prompt(error_message, initial_raw)
+            retry_raw: str = pipe.invoke(retry_prompt)
+
+            pprint(retry_prompt)
+            print("\n\n")
+            pprint(retry_raw)
+            print("\n\n")
 
             try:
-                return parser.parse(retry_raw)
+                pprint(parse_to_dict(retry_raw))
+                print("\n\n")
+                return load_model(parse_to_dict(retry_raw), SectionConfigSlim)  # type: ignore
             except Exception as e:
+                assert isinstance(retry_raw, str)
+                retry_error_message: str = str(e)
                 msg: str = (
-                    f"CODE:7 | Failed to generate a valid output | {retry_raw} | {e}"
+                    f"CODE:7 | Failed to generate a valid output | {retry_raw} | {retry_error_message}"
                 )
                 raise RuntimeError(msg)
 

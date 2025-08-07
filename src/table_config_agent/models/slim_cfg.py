@@ -1,5 +1,5 @@
 from pydantic import BaseModel, HttpUrl, Field
-from typing import Optional
+from typing import Optional, Union
 
 
 # the only reason I'm making a slim config is so I don't explode the models context window
@@ -15,7 +15,7 @@ class SectionConfigSlim(BaseModel):
         default=(None, None), description="rowStart:idx?-start|rowEnd:idx?-end"
     )
 
-    samp: tuple[Optional[bool], Optional[str]] = Field(
+    samp: tuple[Optional[bool], Optional[Union[str, int]]] = Field(
         default=(None, None), description="sampFlg:bool?-isCol|sampVal:str?-val"
     )
     p_val: tuple[Optional[bool], Optional[str]] = Field(

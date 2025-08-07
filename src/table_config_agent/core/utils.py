@@ -7,10 +7,12 @@ from datetime import datetime
 from textwrap import dedent
 import shutil
 import lzma
+import re
 
 
 def collapse(x: str) -> str:
-    return dedent(x).replace("\n", " ").strip()
+    x = dedent(x).strip()
+    return re.sub(r"\s+", " ", x)
 
 
 PydanticModel = TypeVar("PydanticModel", bound=BaseModel)
