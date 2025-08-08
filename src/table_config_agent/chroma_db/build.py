@@ -1,5 +1,6 @@
 from src.table_config_agent.chroma_db.template_examples import TEMPLATE_EXAMPLES
 from src.table_config_agent.core.llms import from_transformers, set_seed
+from src.table_config_agent.core.utils import MODEL_CACHE
 from transformers import AutoTokenizer, AutoModel
 from langchain.embeddings.base import Embeddings
 from langchain.schema import Document
@@ -41,8 +42,10 @@ class HuggingFaceEmbeddings(Embeddings):
 
 def build_chroma_db(db_p: Path, cfg: dict[str, Any]) -> None:
     set_seed(cfg["seed"])  # set seed first
+    model_name: str = cfg["from_transformers"]
+    lora_path: Path = MODEL_CACHE / f"{model_name}_finetuned.bin"
     tokenizer, embedding_model, _ = from_transformers(
-        cfg["from_transformers"], cfg["offload_folder"]
+        model_name, cfg["offload_folder"], lora_path
     )
     template_docs: list[Document] = [
         Document(

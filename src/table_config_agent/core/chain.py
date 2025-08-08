@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, pipeline  # type: ignore
+from src.table_config_agent.core.utils import collapse, load_model, MODEL_CACHE
 from src.table_config_agent.core.llms import from_transformers, set_seed
 from src.table_config_agent.chroma_db.build import HuggingFaceEmbeddings
 from src.table_config_agent.models.slim_cfg import SectionConfigSlim
-from src.table_config_agent.core.utils import collapse, load_model
 from langchain_core.runnables import Runnable, RunnableLambda
 from langchain.output_parsers import PydanticOutputParser
 from langchain_huggingface import HuggingFacePipeline
@@ -147,8 +147,10 @@ def parse_to_dict(raw_text: str) -> dict[str, Any]:
 
 def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
     set_seed(cfg["seed"])
+    model_name: str = cfg["from_transformers"]
+    lora_path: Path = MODEL_CACHE / f"{model_name}_finetuned.bin"
     tokenizer, embeding_model, pipeline_model = from_transformers(
-        cfg["from_transformers"], cfg["offload_folder"]
+        model_name, cfg["offload_folder"], lora_path
     )
     pipe = transformers_pipeline(tokenizer, pipeline_model)
     _ = pipe.invoke("Hai")  # reduces latency for actual runs

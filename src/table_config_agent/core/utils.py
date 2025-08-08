@@ -9,6 +9,9 @@ import shutil
 import lzma
 import re
 
+MODEL_CACHE: Path = Path("CACHE/MODELS/").resolve()
+MODEL_CACHE.mkdir(parents=True, exist_ok=True)
+
 
 def collapse(x: str) -> str:
     x = dedent(x).strip()
