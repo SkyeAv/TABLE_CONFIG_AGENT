@@ -29,7 +29,7 @@ def chroma_build(
         help="creates a timestamped xz compressed backup of the previous chroma_db build",
     ),
 ) -> None:
-    """Builds the chroma_db for agent from examples in src.table_config_agent.chroma_db"""
+    """Builds the chroma_db for agent from examples in src.table_config_agent.chroma_db and finetunes transformers with chroma_db data"""
     db_p: Path = Path(db_path).resolve()
     db_p.parent.mkdir(parents=True, exist_ok=True)
     model_p: Path = Path(model).resolve()

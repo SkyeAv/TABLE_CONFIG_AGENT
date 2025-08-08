@@ -25,7 +25,7 @@ HUMAN_CURATED_TEMPLATE_EXAMPLES: list[Example] = [
         output=collapse(
             """{
             "pub": "PMC:PMC9691620",
-            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx,"
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx",
             "ext_param": (False, "Table S3"),
 
             "samp": (False, 3064),
@@ -64,7 +64,7 @@ HUMAN_CURATED_TEMPLATE_EXAMPLES: list[Example] = [
         output=collapse(
             """{
             "pub": "PMC:PMC9691620",
-            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx,"
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx",
             "ext_param": (False, "Table S3"),
 
             "samp": (False, 3064),
@@ -102,7 +102,7 @@ HUMAN_CURATED_TEMPLATE_EXAMPLES: list[Example] = [
         output=collapse(
             """{
             "pub": "PMC:PMC9691620",
-            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx,"
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/instance/9691620/bin/NIHMS1845232-supplement-1845232_Sup_Tab_1-5.xlsx",
             "ext_param": (False, "Table S3"),
 
             "samp": (False, 3064),

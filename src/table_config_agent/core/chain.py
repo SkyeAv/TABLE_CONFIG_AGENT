@@ -8,10 +8,9 @@ from langchain.output_parsers import PydanticOutputParser
 from langchain_huggingface import HuggingFacePipeline
 from langchain.prompts import PromptTemplate
 from langchain_chroma import Chroma
+from typing import Any, Optional
 from ast import literal_eval
-from pprint import pprint
 from pathlib import Path
-from typing import Any
 import re
 
 
@@ -25,8 +24,7 @@ def transformers_pipeline(
             model=pipeline_model,
             do_sample=False,
             temperature=0.0,  # I have to explicitly specify this to stop it from autofilling to 0.7 and throwing an error
-            max_new_tokens=512,
-            repetition_penalty=1.2,
+            max_new_tokens=256,
             return_full_text=False,
         )
     )
@@ -45,7 +43,7 @@ def chroma_db_fewshots(
         embedding_function=HuggingFaceEmbeddings(tokenizer, embedding_model),
         collection_name="template_examples",
     )
-    fewshots = db.similarity_search(query=user_input, k=8)
+    fewshots = db.similarity_search(query=user_input, k=k)
     return [doc.metadata["formatted"] for doc in fewshots]
 
 
@@ -55,36 +53,38 @@ def agent_prompt() -> PromptTemplate:
 You are a Python dictionary generation assistant. Your task is to convert structured natural language
 descriptions of tabular metadata into strictly valid Python dictionaries that match the provided schema exactly.
 
-Each input describes:
+### Each input describes:
 - the publication source (e.g., PMC ID)
 - the tabular file location
 - how specific columns map to fields (e.g., p-value, subject, object)
 - optional enhancements such as boost classes or taxonomic context
 
-You MUST respond with:
+### You MUST respond with:
 - A single Python dictionary
 - Fully valid Python (parsable by `ast.literal_eval`)
 - Matching the schema structure and field types precisely
+- Only include keys for fields the user explicitly mentioned; omit all others (Pydantic will apply defaults).
 
 Output Schema (for reference only — do NOT include it in your output):
 {pydantic_model}
 
-Output Rules:
-- Respond ONLY with the dictionary — no explanations, no markdown, no formatting
+### Output Rules:
+- Respond ONLY with the dictionary — no explanations, no comments, no markdown, no formatting
 - Use double quotes for all dictionary keys
 - Use double quotes for all string values
 - Use True / False (capitalized) for booleans
-- Use None for missing or null values
+- Use None (or [None] for boost_cls or drop_cls) for missing or null values
 - Use (True, "A") if the field maps to a column
-- Use (False, "value") or (False, value) if the field is a fixed constant
-- Use lists for any collection-type fields
+- Use (False, "value") if the field is a fixed constant
+- Use lists or tuple (as specified in examples) for any collection-type fields
 - Do not use markdown, code blocks, or JSON
 - Do not use single quotes — always use double quotes for keys and string values
+- Only include fields the user mentioned; omit everything else
 
-Here are example inputs and their corresponding valid Python dictionary outputs:
+### Here are example inputs and their corresponding valid Python dictionary outputs:
 {fewshots}
 
-Now generate the dictionary for the following input:
+### Now generate the dictionary for the following input:
 {user_input}
 """
     )
@@ -93,12 +93,10 @@ Now generate the dictionary for the following input:
 def retry_prompt() -> PromptTemplate:
     return PromptTemplate.from_template(
         """\
-Your previous output was NOT valid Python and could not be interpreted as a dictionary.
-
-You must now fix the output and re-emit ONLY a valid Python dictionary.
+Your previous output was NOT valid Python and could not be interpreted as a dictionary. You must now fix the output and re-emit ONLY a valid Python dictionary.
 
 ### DO NOT:
-- Include any text before or after the dictionary (e.g., 'Answer:', 'Here is the result:', etc.)
+- Include any text before or after the dictionary (e.g., 'Answer:', 'Here is the result:', '### CORRECT OUTPUT', etc.)
 - Use markdown formatting (e.g., triple backticks, `python`, etc.)
 - Include any explanation or comments
 - Include fields or values not present in the schema
@@ -106,11 +104,11 @@ You must now fix the output and re-emit ONLY a valid Python dictionary.
 ### DO:
 - Return a clean Python dictionary only — no preamble, no markdown, no explanation
 - Use standard Python syntax:
-  - Double quotes for all dictionary keys
-  - Double quotes for all string values
-  - Capitalized True, False, and None values
-  - Use tuples like (True, "A") or (False, "value")
-  - Use lists where appropriate
+    - Double quotes for all dictionary keys
+    - Double quotes for all string values
+    - Capitalized True, False, and None values
+    - Use tuples like (True, "A") or (False, "value")
+    - Use lists where appropriate
 - Match the structure and types of the schema exactly
 - Ensure the entire response is valid Python dictionary syntax (e.g., can be parsed by ast.literal_eval)
 
@@ -165,7 +163,7 @@ def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
             user_input,
             cfg["fewshot_count"],
         )
-        fewshot_str = "\n".join(fewshots)
+        fewshot_str = "\n\n".join(fewshots)
         return agent_prompt().format(
             pydantic_model=pydantic_model, fewshots=fewshot_str, user_input=user_input
         )
@@ -177,40 +175,56 @@ def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
             pydantic_model=pydantic_model,
         )
 
-    def invoke_with_retry(user_input: str) -> SectionConfigSlim:
-        initial_prompt: str = format_agent_prompt(user_input)
-        initial_raw: str = pipe.invoke(initial_prompt)
+    def invoke_with_retry(
+        user_input: str, reprompts: int = 3, retries: int = 3
+    ) -> dict[str, Any]:
+        last_exception: Optional[str] = None
+        bad_output: str = ""
 
-        pprint(initial_prompt)
-        print("\n\n")
-        pprint(initial_raw)
-        print("\n\n")
+        for _ in range(reprompts):
+            initial_prompt: str = format_agent_prompt(user_input)
+            initial_raw: str = pipe.invoke(initial_prompt)
 
-        try:
-            pprint(parse_to_dict(initial_raw))
+            print("|INITIAL PROMPT|")
+            print(initial_prompt)
             print("\n\n")
-            return load_model(parse_to_dict(initial_raw), SectionConfigSlim)  # type: ignore
-        except Exception as e:
-            error_message: str = str(e)
-            assert isinstance(initial_raw, str)
-            retry_prompt: str = format_retry_prompt(error_message, initial_raw)
-            retry_raw: str = pipe.invoke(retry_prompt)
-
-            pprint(retry_prompt)
-            print("\n\n")
-            pprint(retry_raw)
+            print("|INITIAL RAW|")
+            print(initial_raw)
             print("\n\n")
 
             try:
-                pprint(parse_to_dict(retry_raw))
+                data: dict[str, Any] = parse_to_dict(initial_raw)
+                print("|INITIAL PARSED|")
+                print(data)
                 print("\n\n")
-                return load_model(parse_to_dict(retry_raw), SectionConfigSlim)  # type: ignore
+                return load_model(data, SectionConfigSlim).model_dump()  # type: ignore
             except Exception as e:
-                assert isinstance(retry_raw, str)
-                retry_error_message: str = str(e)
-                msg: str = (
-                    f"CODE:7 | Failed to generate a valid output | {retry_raw} | {retry_error_message}"
-                )
-                raise RuntimeError(msg)
+                last_exception = str(e)
+                bad_output = initial_raw
+
+                for _ in range(retries):
+                    retry_prompt: str = format_retry_prompt(last_exception, bad_output)
+                    retry_raw: str = pipe.invoke(retry_prompt)
+
+                    print("|RETRY PROMPT|")
+                    print(retry_prompt)
+                    print("\n\n")
+                    print("|RETRY RAW|")
+                    print(retry_raw)
+                    print("\n\n")
+
+                    try:
+                        data = parse_to_dict(retry_raw)
+                        print("|RETRY PARSED|")
+                        print(data)
+                        print("\n\n")
+                        return load_model(data, SectionConfigSlim).model_dump()  # type: ignore
+                    except Exception as e:
+                        last_exception = str(e)
+                        bad_output = retry_raw
+        msg: str = (
+            f"CODE:7 | Failed to generate a valid output | Last output: {bad_output} | Error: {last_exception}"
+        )
+        raise RuntimeError(msg)
 
     return RunnableLambda(invoke_with_retry)

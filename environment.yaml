@@ -28,4 +28,6 @@ dependencies:
   # -- PROD.PIP -- #
   - pip
   - pip:
+    - peft
+    - datasets
     - -e .
