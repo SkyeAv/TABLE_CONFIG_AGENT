@@ -148,7 +148,7 @@ def parse_to_dict(raw_text: str) -> dict[str, Any]:
 def build_chain(cfg: dict[str, Any]) -> Runnable:  # type: ignore
     set_seed(cfg["seed"])
     model_name: str = cfg["from_transformers"]
-    lora_path: Path = MODEL_CACHE / f"{model_name}_finetuned.bin"
+    lora_path: Path = MODEL_CACHE / f"{model_name}_finetuned"
     tokenizer, embeding_model, pipeline_model = from_transformers(
         model_name, cfg["offload_folder"], lora_path
     )

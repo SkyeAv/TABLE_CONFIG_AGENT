@@ -2,6 +2,7 @@ from src.table_config_agent.chroma_db.template_examples import (
     TEMPLATE_EXAMPLES,
     Example,
 )
+from transformers.data.data_collator import DataCollatorForLanguageModeling
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
 from src.table_config_agent.models.slim_cfg import SectionConfigSlim
 from peft import get_peft_model, LoraConfig, TaskType, PeftModel
@@ -44,13 +45,16 @@ def suppress_tqdm() -> ContextManager:  # type: ignore
 
 
 def tokenize_and_mask(
-    tokenizer: AutoTokenizer, batch: dict[str, Any], sep: str, max_length: int
+    tokenizer: AutoTokenizer, batch: dict[str, Any], max_length: int
 ) -> dict[str, Any]:
-    texts: list[str] = [p + sep + t for p, t in zip(batch["prompt"], batch["target"])]
+    texts: list[str] = [
+        p + tokenizer.pad_token + t for p, t in zip(batch["prompt"], batch["target"])  # type: ignore
+    ]
     tokens = tokenizer(  # type: ignore
         texts, truncation=True, padding="max_length", max_length=max_length
     )
-    labels = tokens["input_ids"].copy()
+
+    labels = [seq.copy() for seq in tokens["input_ids"]]
     for i, pid in enumerate(
         tokenizer(  # type: ignore
             batch["prompt"],
@@ -60,8 +64,9 @@ def tokenize_and_mask(
         )["input_ids"]
     ):
         prompt_len: int = sum(1 for token in pid if token != tokenizer.pad_token_id)  # type: ignore
-        labels[i][:prompt_len] = -100  # ignore prompt tokens in loss
-        tokens["labels"] = labels
+        labels[i][:prompt_len] = [-100] * prompt_len  # ignore prompt tokens in loss
+
+    tokens["labels"] = labels
     return tokens  # type: ignore
 
 
@@ -114,7 +119,6 @@ def format_finetuning_prompt(user_input: str, pydantic_model: str) -> str:
 def train_dataset(tokenizer: AutoTokenizer, max_length: int = 512) -> Dataset:
     parser = PydanticOutputParser(pydantic_object=SectionConfigSlim)
     pydantic_model: str = parser.get_format_instructions()
-    sep: str = tokenizer.eos_token or tokenizer.sep_token or ""  # type: ignore
     examples: list[Example] = TEMPLATE_EXAMPLES
     ds = Dataset.from_dict(
         {
@@ -124,11 +128,13 @@ def train_dataset(tokenizer: AutoTokenizer, max_length: int = 512) -> Dataset:
             "target": [ex["output"] for ex in examples],
         }
     )
-    return ds.map(
-        (lambda x: tokenize_and_mask(tokenizer, x, sep, max_length)),
+    ds = ds.map(
+        (lambda x: tokenize_and_mask(tokenizer, x, max_length)),
         batched=True,
         remove_columns=["prompt", "target"],
-    ).set_format("torch", columns=["input_ids", "attention_mask", "labels"])
+    )
+    ds.set_format("torch", columns=["input_ids", "attention_mask", "labels"])
+    return ds
 
 
 def finetune(
@@ -136,6 +142,17 @@ def finetune(
     pipeline_model: AutoModelForCausalLM,
     posix_model_path: str,
 ) -> AutoModelForCausalLM:
+
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token or tokenizer.sep_token or ""
+        tokenizer.pad_token_id = tokenizer.eos_token_id
+    pipeline_model.config.pad_token_id = tokenizer.pad_token_id
+
+    vocab_size: int = len(tokenizer)
+    emb_size: int = pipeline_model.get_input_embeddings().weight.size(0)
+    if vocab_size != emb_size:
+        pipeline_model.resize_token_embeddings(vocab_size)
+    
     lora = LoraConfig(
         task_type=TaskType.CAUSAL_LM,
         inference_mode=False,
@@ -144,6 +161,10 @@ def finetune(
         lora_dropout=0.05,
     )
     pipeline_pfet = get_peft_model(pipeline_model, lora)  # type: ignore
+    emb_size = pipeline_pfet.get_input_embeddings().weight.size(0)
+    if vocab_size != emb_size:
+        pipeline_pfet.resize_token_embeddings(vocab_size)
+    pipeline_pfet.config.pad_token_id = tokenizer.pad_token_id
     args = TrainingArguments(
         output_dir=posix_model_path,
         overwrite_output_dir=True,
@@ -151,9 +172,17 @@ def finetune(
         learning_rate=1e-4,
         weight_decay=0.01,
         logging_strategy="no",
+        label_names=["labels"]
+    )
+    data_collator = DataCollatorForLanguageModeling(
+        tokenizer=tokenizer,
+        mlm=False,
     )
     trainer = Trainer(
-        model=pipeline_pfet, args=args, train_dataset=train_dataset(tokenizer)
+        model=pipeline_pfet,
+        args=args,
+        train_dataset=train_dataset(tokenizer),
+        data_collator=data_collator,
     )
     trainer.train()
     pipeline_pfet.save_pretrained(posix_model_path)
@@ -164,11 +193,16 @@ def from_transformers(
     hf_model: str, offload_folder: Path, lora_pipeline_path: Path
 ) -> tuple[AutoTokenizer, AutoModel, AutoModelForCausalLM]:
     with suppress_tqdm():
+
         try:
             tokenizer = AutoTokenizer.from_pretrained(hf_model, use_fast=True)  # type: ignore
             _ = tokenizer.tokenize("Hai")  # Force backend check
         except Exception:
             tokenizer = AutoTokenizer.from_pretrained(hf_model, use_fast=False)  # type: ignore
+        if tokenizer.pad_token is None:
+            tokenizer.pad_token = tokenizer.eos_token or tokenizer.sep_token or ""
+        tokenizer.pad_token_id = tokenizer.pad_token_id or tokenizer.eos_token_id
+        
         embeding_model = AutoModel.from_pretrained(
             hf_model,
             device_map={"": "cpu"},
@@ -183,7 +217,15 @@ def from_transformers(
             offload_state_dict=True,
             low_cpu_mem_usage=True,
         )
-        if lora_pipeline_path.exists():
+
+        vocab_size: int = len(tokenizer)
+        emb_size: int = pipeline_model.get_input_embeddings().weight.size(0)
+        if vocab_size != emb_size:
+            pipeline_model.resize_token_embeddings(vocab_size)
+        pipeline_model.config.pad_token_id = tokenizer.pad_token_id
+
+        adapter_config_path: Path = lora_pipeline_path / "adapter_config.json"
+        if adapter_config_path.exists():
             pipeline_model = PeftModel.from_pretrained(
                 pipeline_model,
                 lora_pipeline_path.as_posix(),
@@ -191,6 +233,10 @@ def from_transformers(
                 torch_dtype="float16",
                 offload_folder=offload_folder.as_posix(),
             )
+            emb_size = pipeline_model.get_input_embeddings().weight.size(0)
+            if vocab_size != emb_size:
+                pipeline_model.resize_token_embeddings(vocab_size)
+            pipeline_model.config.pad_token_id = tokenizer.pad_token_id
         else:
             pipeline_model = finetune(
                 tokenizer, pipeline_model, lora_pipeline_path.as_posix()

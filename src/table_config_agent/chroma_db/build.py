@@ -43,7 +43,7 @@ class HuggingFaceEmbeddings(Embeddings):
 def build_chroma_db(db_p: Path, cfg: dict[str, Any]) -> None:
     set_seed(cfg["seed"])  # set seed first
     model_name: str = cfg["from_transformers"]
-    lora_path: Path = MODEL_CACHE / f"{model_name}_finetuned.bin"
+    lora_path: Path = MODEL_CACHE / f"{model_name}_finetuned"
     tokenizer, embedding_model, _ = from_transformers(
         model_name, cfg["offload_folder"], lora_path
     )

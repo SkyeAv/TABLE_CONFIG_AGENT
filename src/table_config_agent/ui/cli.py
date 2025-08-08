@@ -8,7 +8,7 @@ from langchain_core.runnables import Runnable
 from pathlib import Path
 import typer
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_show_locals=False)
 
 
 @app.command()
