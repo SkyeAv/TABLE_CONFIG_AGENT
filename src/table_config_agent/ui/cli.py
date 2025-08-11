@@ -5,9 +5,12 @@ from src.table_config_agent.core.utils import xz_backup, model_cfg
 from src.table_config_agent.models.template_cfg import Template
 from src.table_config_agent.core.chain import build_chain
 from langchain_core.runnables import Runnable
+from dotenv import load_dotenv
 from pathlib import Path
+from typing import Any
 import typer
 
+load_dotenv()
 app = typer.Typer(pretty_exceptions_show_locals=False)
 
 
@@ -76,7 +79,11 @@ def invoke_agent(
     chain: Runnable = build_chain(model_cfg(model_p))  # type: ignore
     output: SectionConfigSlim = chain.invoke(user_input)
     template: Template = slim_to_template(output, user_name, user_organization)
-    write_template(template.model_dump(), output_p)
+    table_config: dict[str, Any] = {
+        "template": template.model_dump(),
+        "sections": [None],
+    }
+    write_template(table_config, output_p)
     return None
 
 

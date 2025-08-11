@@ -23,7 +23,6 @@ def transformers_pipeline(
             tokenizer=tokenizer,
             model=pipeline_model,
             do_sample=False,
-            temperature=0.0,  # I have to explicitly specify this to stop it from autofilling to 0.7 and throwing an error
             max_new_tokens=256,
             return_full_text=False,
         )
@@ -80,6 +79,7 @@ Output Schema (for reference only — do NOT include it in your output):
 - Do not use markdown, code blocks, or JSON
 - Do not use single quotes — always use double quotes for keys and string values
 - Only include fields the user mentioned; omit everything else
+- Never return type names like str, int, or list as values — always use real example values or None
 
 ### Here are example inputs and their corresponding valid Python dictionary outputs:
 {fewshots}
@@ -100,6 +100,7 @@ Your previous output was NOT valid Python and could not be interpreted as a dict
 - Use markdown formatting (e.g., triple backticks, `python`, etc.)
 - Include any explanation or comments
 - Include fields or values not present in the schema
+- Return type names like str, int, or list as values — always use real example values or None
 
 ### DO:
 - Return a clean Python dictionary only — no preamble, no markdown, no explanation

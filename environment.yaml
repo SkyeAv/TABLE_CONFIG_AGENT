@@ -25,6 +25,7 @@ dependencies:
   - sentencepiece
   - tiktoken
   - blobfile
+  - python-dotenv
   # -- PROD.PIP -- #
   - pip
   - pip:

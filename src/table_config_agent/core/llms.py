@@ -102,6 +102,7 @@ Output Schema (for reference only — do NOT include it in your output):
 - Use lists or tuple (as specified in examples) for any collection-type fields
 - Do not use markdown, code blocks, or JSON
 - Do not use single quotes — always use double quotes for keys and string values
+- Never return type names like str, int, or list as values — always use real example values or None
 
 ### Now generate the dictionary for the following input:
 {user_input}
@@ -152,7 +153,7 @@ def finetune(
     emb_size: int = pipeline_model.get_input_embeddings().weight.size(0)
     if vocab_size != emb_size:
         pipeline_model.resize_token_embeddings(vocab_size)
-    
+
     lora = LoraConfig(
         task_type=TaskType.CAUSAL_LM,
         inference_mode=False,
@@ -168,11 +169,13 @@ def finetune(
     args = TrainingArguments(
         output_dir=posix_model_path,
         overwrite_output_dir=True,
-        num_train_epochs=3,
-        learning_rate=1e-4,
+        num_train_epochs=5,
+        learning_rate=5e-5,
         weight_decay=0.01,
         logging_strategy="no",
-        label_names=["labels"]
+        label_names=["labels"],
+        per_device_train_batch_size=1,
+        gradient_accumulation_steps=4,
     )
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
@@ -202,7 +205,7 @@ def from_transformers(
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token or tokenizer.sep_token or ""
         tokenizer.pad_token_id = tokenizer.pad_token_id or tokenizer.eos_token_id
-        
+
         embeding_model = AutoModel.from_pretrained(
             hf_model,
             device_map={"": "cpu"},

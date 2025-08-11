@@ -1,6 +1,8 @@
 from src.table_config_agent.core.utils import load_model, extension_from_url
 from src.table_config_agent.models.template_cfg import Template
 from ruamel.yaml.error import YAMLError
+from urllib.parse import ParseResult
+from collections.abc import Mapping
 from ruamel.yaml import YAML
 from pathlib import Path
 from typing import Any
@@ -25,11 +27,25 @@ def load_yaml(file_path: Path) -> Any:
         raise RuntimeError(msg)
 
 
+def coerce_yaml(obj: Any) -> Any:
+    if isinstance(obj, (str, int, float, bool)) or obj is None:
+        return obj
+    if isinstance(obj, (Path, ParseResult)):
+        return str(obj)
+    if hasattr(obj, "__str__") and "pydantic" in type(obj).__module__:
+        return str(obj)
+    if isinstance(obj, (list, tuple, set)):
+        return [coerce_yaml(item) for item in obj]
+    if isinstance(obj, Mapping):
+        return {coerce_yaml(k): coerce_yaml(v) for k, v in obj.items()}
+    return str(obj)
+
+
 def write_template(yaml_dict: dict[str, Any], output_path: Path) -> None:
     posix_output_path: str = output_path.as_posix()
     try:
         with open(posix_output_path, "w", encoding="utf-8") as f:
-            yaml.dump(yaml_dict, f)
+            yaml.dump(coerce_yaml(yaml_dict), f)
             return None
     except PermissionError:
         msg = f"CODE:4B | Permission denied: {posix_output_path}"
