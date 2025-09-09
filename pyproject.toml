@@ -15,4 +15,4 @@ authors = [
 find = { where = ["."] }
 
 [project.scripts]
-cli = "src.table_config_agent.ui.cli:main"
+TCAGENT = "src.table_config_agent.ui.cli:main"
